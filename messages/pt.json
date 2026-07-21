@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "title": "FinanceCalc Hub - Calculadoras Financeiras Grátis",
+    "description": "Calculadoras financeiras gratuitas para hipoteca, empréstimos, investimentos, poupança e quitação de dívidas. Tome decisões financeiras mais inteligentes com ferramentas precisas."
+  },
+  "nav": {
+    "home": "Início",
+    "tools": "Ferramentas",
+    "blog": "Blog",
+    "about": "Sobre"
+  },
+  "hero": {
+    "eyebrow": "FERRAMENTAS FINANCEIRAS GRÁTIS",
+    "title": "CALCULADORAS INTELIGENTES PARA DINHEIRO MAIS INTELIGENTE",
+    "subtitle": "Precisas, rápidas e completamente gratuitas. Planeje sua hipoteca, elimine suas dívidas, multiplique seus investimentos — tudo em um só lugar.",
+    "ctaPrimary": "Explorar Calculadoras",
+    "ctaSecondary": "Ler o Blog"
+  },
+  "tools": {
+    "title": "Calculadoras Financeiras",
+    "subtitle": "Escolha uma calculadora e obtenha resultados instantâneos e precisos.",
+    "mortgage": "Calculadora de Hipoteca",
+    "personalLoan": "Calculadora de Empréstimo Pessoal / EMI",
+    "creditCard": "Calculadora de Quitação de Cartão",
+    "compoundInterest": "Calculadora de Juros Compostos",
+    "savingsGoal": "Calculadora de Meta de Poupança",
+    "debtPayoff": "Calculadora de Quitação de Dívida",
+    "investmentReturn": "Calculadora de Retorno de Investimento / CAGR",
+    "affordability": "Calculadora de Acessibilidade"
+  },
+  "common": {
+    "calculate": "Calcular",
+    "reset": "Limpar",
+    "result": "Resultado",
+    "monthlyPayment": "Pagamento Mensal",
+    "totalInterest": "Juros Totais",
+    "totalCost": "Custo Total",
+    "years": "Anos",
+    "months": "Meses",
+    "interestRate": "Taxa de Juros",
+    "loanAmount": "Valor do Empréstimo",
+    "downPayment": "Entrada",
+    "loanTerm": "Prazo do Empréstimo",
+    "currency": "R$",
+    "shareResult": "Compartilhar Resultado",
+    "disclaimer": "Esta calculadora fornece estimativas apenas para fins informativos. Consulte um assessor financeiro antes de tomar decisões.",
+    "relatedTools": "Ferramentas Relacionadas"
+  }
+}

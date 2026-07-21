@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "title": "FinanceCalc Hub - Free Financial Calculators",
+    "description": "Free financial calculators for mortgage, loans, investments, savings, and debt payoff. Make smarter money decisions with accurate tools."
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "blog": "Blog",
+    "about": "About"
+  },
+  "hero": {
+    "eyebrow": "FREE FINANCIAL TOOLS",
+    "title": "SMART CALCULATORS FOR SMARTER MONEY",
+    "subtitle": "Accurate, fast, and completely free. Plan your mortgage, crush your debt, grow your investments — all in one place.",
+    "ctaPrimary": "Explore Calculators",
+    "ctaSecondary": "Read the Blog"
+  },
+  "tools": {
+    "title": "Financial Calculators",
+    "subtitle": "Pick a calculator and get instant, accurate results.",
+    "mortgage": "Mortgage Calculator",
+    "personalLoan": "Personal Loan / EMI Calculator",
+    "creditCard": "Credit Card Payoff Calculator",
+    "compoundInterest": "Compound Interest Calculator",
+    "savingsGoal": "Savings Goal Calculator",
+    "debtPayoff": "Debt Payoff Calculator",
+    "investmentReturn": "Investment Return / CAGR Calculator",
+    "affordability": "Affordability Calculator"
+  },
+  "common": {
+    "calculate": "Calculate",
+    "reset": "Reset",
+    "result": "Result",
+    "monthlyPayment": "Monthly Payment",
+    "totalInterest": "Total Interest",
+    "totalCost": "Total Cost",
+    "years": "Years",
+    "months": "Months",
+    "interestRate": "Interest Rate",
+    "loanAmount": "Loan Amount",
+    "downPayment": "Down Payment",
+    "loanTerm": "Loan Term",
+    "currency": "$",
+    "shareResult": "Share Result",
+    "disclaimer": "This calculator provides estimates for informational purposes only. Consult a financial advisor before making decisions.",
+    "relatedTools": "Related Tools"
+  }
+}
