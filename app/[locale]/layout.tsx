@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
 import { routing } from "@/lib/i18n/routing";
 import { notFound } from "next/navigation";
+import { readFileSync } from "fs";
+import { join } from "path";
 import "@/app/globals.css";
 
 const inter = Inter({
@@ -29,11 +30,13 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  const messagesPath = join(process.cwd(), "messages", `${locale}.json`);
+  const messages = JSON.parse(readFileSync(messagesPath, "utf-8"));
+
 
   return (
     <html lang={locale} className={`${inter.variable} font-sans`}>
-      <body className="min-h-full flex flex-col bg-violet-200 text-black font-bold">
+      <body className="min-h-full flex flex-col bg-white text-black font-bold">
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
         </NextIntlClientProvider>

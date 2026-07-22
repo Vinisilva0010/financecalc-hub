@@ -16,17 +16,36 @@
     "ctaPrimary": "Explorar Calculadoras",
     "ctaSecondary": "Ler o Blog"
   },
+  "trust": {
+    "free": "100% GRATUITO",
+    "noSignup": "SEM CADASTRO",
+    "updated": "ATUALIZADO 2026",
+    "countries": "USADO NO BRASIL • EUA • PORTUGAL • +40 PAÍSES"
+  },
   "tools": {
     "title": "Calculadoras Financeiras",
     "subtitle": "Escolha uma calculadora e obtenha resultados instantâneos e precisos.",
     "mortgage": "Calculadora de Hipoteca",
+    "mortgageDesc": "Calcule o valor da parcela mensal, juros totais e veja toda a tabela de amortização.",
     "personalLoan": "Calculadora de Empréstimo Pessoal / EMI",
+    "personalLoanDesc": "Descubra o valor da parcela mensal e o custo total de juros do seu empréstimo pessoal.",
     "creditCard": "Calculadora de Quitação de Cartão",
+    "creditCardDesc": "Veja quanto tempo vai levar para quitar sua dívida no cartão e quanto você pode economizar em juros.",
     "compoundInterest": "Calculadora de Juros Compostos",
+    "compoundInterestDesc": "Calcule como seu dinheiro cresce ao longo do tempo com o poder dos juros compostos.",
     "savingsGoal": "Calculadora de Meta de Poupança",
+    "savingsGoalDesc": "Descubra exatamente quanto você precisa guardar por mês para atingir sua meta financeira.",
     "debtPayoff": "Calculadora de Quitação de Dívida",
+    "debtPayoffDesc": "Compare os métodos Snowball e Avalanche e encontre a forma mais rápida de sair das dívidas.",
     "investmentReturn": "Calculadora de Retorno de Investimento / CAGR",
-    "affordability": "Calculadora de Acessibilidade"
+    "investmentReturnDesc": "Calcule a taxa de crescimento anual real (CAGR) dos seus investimentos ao longo do tempo.",
+    "affordability": "Calculadora de Acessibilidade",
+    "affordabilityDesc": "Descubra quanto de casa ou empréstimo você consegue pagar de forma realista com sua renda."
+  },
+  "ctaFinal": {
+    "title": "PRONTO PARA TOMAR DECISÕES FINANCEIRAS MAIS INTELIGENTES?",
+    "subtitle": "Comece agora. 100% gratuito. Sem enrolação.",
+    "button": "EXPLORAR TODAS AS CALCULADORAS"
   },
   "common": {
     "calculate": "Calcular",

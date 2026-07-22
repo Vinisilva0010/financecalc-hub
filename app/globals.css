@@ -1,64 +1,70 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ==================== TEMA BRUTALISTA ==================== */
 @theme inline {
-  --color-background: #e9d5ff;
+  --color-background: #ffffff;
   --color-foreground: #000000;
-  --font-sans: var(--font-sans);
+
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --color-violet-50: #f5f3ff;
-  --color-violet-100: #ede9fe;
-  --color-violet-200: #e9d5ff;
-  --color-violet-300: #ddd6fe;
-  --color-violet-400: #c4b5fd;
-  --color-violet-500: #a78bfa;
-  --color-violet-600: #8b5cf6;
-  --color-violet-700: #7c3aed;
-  --color-violet-800: #6d28d9;
-  --color-violet-900: #5b21b6;
-  --color-blue-50: #eff6ff;
-  --color-blue-100: #dbeafe;
-  --color-blue-200: #bfdbfe;
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-800: #1e40af;
-  --color-blue-900: #1e3a8a;
-  --color-yellow-300: #facc15;
-  --color-yellow-400: #fbbf24;
-  --color-yellow-500: #eab308;
-  --color-ring: #000000;
-  --color-input: #000000;
-  --color-border: #000000;
-  --color-primary: #6d28d9;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #bfdbfe;
-  --color-secondary-foreground: #000000;
-  --color-muted: #ddd6fe;
-  --color-muted-foreground: #5b21b6;
+
+  /* Cores principais */
+  --color-primary: #000000;
   --color-accent: #facc15;
   --color-accent-foreground: #000000;
-  --color-destructive: #dc2626;
-  --color-card: #ffffff;
-  --color-card-foreground: #000000;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #000000;
+
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #3f3f46;
+
+  /* Bordas pretas fortes (brutalist style) */
+  --color-border: #000000;
+  --color-input: #000000;
+  --color-ring: #000000;
+
+  /* Cores de destaque */
+  --color-yellow-300: #facc15;
+  --color-yellow-400: #fbbf24;
+
+  /* Arredondamentos (mantendo estilo brutalista) */
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
   --radius-xl: 0px;
 }
 
+/* ==================== BASE ==================== */
 @layer base {
   * {
-    @apply border-border;
+    border-color: #000000; /* Força borda preta */
   }
+
   body {
-    @apply bg-violet-200 text-foreground font-bold;
+    @apply bg-white text-black font-bold;
   }
+
   html {
     @apply font-sans;
+  }
+
+  /* Estilo brutalista global */
+  button, a {
+    transition: all 0.1s ease;
+  }
+}
+
+/* ==================== COMPONENTES PERSONALIZADOS ==================== */
+@layer components {
+  .brutalist-card {
+    @apply border-4 border-black bg-white p-7 shadow-[8px_8px_0_#000] 
+           transition-all hover:-translate-x-1 hover:-translate-y-1 
+           hover:shadow-[14px_14px_0_#000];
+  }
+
+  .brutalist-button {
+    @apply border-4 border-black px-8 py-4 text-sm font-black uppercase tracking-tight 
+           shadow-[6px_6px_0_#000] transition-all 
+           hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[9px_9px_0_#000]
+           active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0_#000];
   }
 }
