@@ -1,24 +1,26 @@
 "use client";
 
 import { forwardRef } from "react";
-import { useTranslations } from "next-intl";
 
 interface NumberInputProps {
   label: string;
   name: string;
   placeholder?: string;
-  min?: number;
-  max?: number;
-  step?: number;
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
   error?: string;
   helperText?: string;
   suffix?: string;
   prefix?: string;
+  value?: number | string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
   (
-    { label, name, placeholder, min, max, step = 1, error, helperText, suffix, prefix },
+    { label, name, placeholder, min, max, step = 1, error, helperText, suffix, prefix, value, onChange, onBlur },
     ref
   ) => {
     return (
@@ -46,6 +48,9 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             min={min}
             max={max}
             step={step}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
             className={`w-full border-[4px] border-black bg-white px-4 py-3 text-lg font-black text-black shadow-[4px_4px_0_#000] outline-none transition-all focus:shadow-[6px_6px_0_#000] ${
               prefix ? "pl-12" : ""
             } ${suffix ? "pr-12" : ""} ${

@@ -8,14 +8,17 @@ interface CurrencyInputProps {
   label: string;
   name: string;
   placeholder?: string;
-  min?: number;
-  max?: number;
+  min?: number | string;
+  max?: number | string;
   error?: string;
   helperText?: string;
+  value?: number | string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
-  ({ label, name, placeholder, min, max, error, helperText }, ref) => {
+  ({ label, name, placeholder, min, max, error, helperText, value, onChange, onBlur }, ref) => {
     const locale = useLocale();
     const currencySymbol = locale === "pt" ? "R$" : "$";
 
@@ -31,6 +34,9 @@ const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
         error={error}
         helperText={helperText}
         prefix={currencySymbol}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
       />
     );
   }
