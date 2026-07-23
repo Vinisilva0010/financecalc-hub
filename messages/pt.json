@@ -42,6 +42,19 @@
     "affordability": "Calculadora de Acessibilidade",
     "affordabilityDesc": "Descubra quanto de casa ou empréstimo você consegue pagar de forma realista com sua renda."
   },
+  "creditCard": {
+    "avalanche": "Método Avalanche",
+    "snowball": "Método Snowball",
+    "totalMonths": "Total de Meses para Quitar",
+    "totalInterestPaid": "Total de Juros Pagos",
+    "totalAmountPaid": "Valor Total Pago",
+    "compareMethods": "Comparar Métodos",
+    "addDebt": "Adicionar Dívida",
+    "balance": "Saldo",
+    "minimumPayment": "Pagamento Mínimo",
+    "payoffProgress": "Progresso de Quitação",
+    "remainingBalance": "Saldo Restante"
+  },
   "ctaFinal": {
     "title": "PRONTO PARA TOMAR DECISÕES FINANCEIRAS MAIS INTELIGENTES?",
     "subtitle": "Comece agora. 100% gratuito. Sem enrolação.",

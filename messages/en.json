@@ -42,6 +42,19 @@
     "affordability": "Affordability Calculator",
     "affordabilityDesc": "Discover how much house or loan you can realistically afford based on your income."
   },
+  "creditCard": {
+    "avalanche": "Avalanche Method",
+    "snowball": "Snowball Method",
+    "totalMonths": "Total Months to Payoff",
+    "totalInterestPaid": "Total Interest Paid",
+    "totalAmountPaid": "Total Amount Paid",
+    "compareMethods": "Compare Methods",
+    "addDebt": "Add Debt",
+    "balance": "Balance",
+    "minimumPayment": "Minimum Payment",
+    "payoffProgress": "Payoff Progress",
+    "remainingBalance": "Remaining Balance"
+  },
   "ctaFinal": {
     "title": "READY TO MAKE SMARTER FINANCIAL DECISIONS?",
     "subtitle": "Start now. 100% free. No BS.",
