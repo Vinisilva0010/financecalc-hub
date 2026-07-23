@@ -77,5 +77,37 @@
     "shareResult": "Share Result",
     "disclaimer": "This calculator provides estimates for informational purposes only. Consult a financial advisor before making decisions.",
     "relatedTools": "Related Tools"
+  },
+  "compoundInterest": {
+    "principal": "Initial Investment",
+    "monthlyContribution": "Monthly Contribution",
+    "annualRate": "Annual Interest Rate",
+    "years": "Investment Period (Years)",
+    "finalAmount": "Final Amount",
+    "totalContributions": "Total Contributions",
+    "totalInterestEarned": "Total Interest Earned",
+    "growthChart": "Growth Over Time"
+  },
+  "savingsGoal": {
+    "title": "Savings Goal Calculator",
+    "description": "Calculate how long it will take to reach your savings goal or how much you need to save each month.",
+    "goalAmount": "Goal Amount",
+    "currentSavings": "Current Savings",
+    "monthlyContribution": "Monthly Contribution",
+    "timeframe": "Timeframe (Years)",
+    "monthsToReach": "Months to Reach Goal",
+    "totalContributions": "Total Contributions",
+    "totalInterestEarned": "Total Interest Earned",
+    "finalAmount": "Final Amount",
+    "isReachable": "Goal Status",
+    "reachable": "Reachable",
+    "notReachable": "Not Reachable",
+    "shortfall": "Shortfall",
+    "requiredMonthly": "Required Monthly",
+    "progressChart": "Savings Progress Over Time",
+    "month": "Month",
+    "balance": "Balance",
+    "contributions": "Contributions",
+    "interest": "Interest"
   }
 }

@@ -77,5 +77,37 @@
     "shareResult": "Compartilhar Resultado",
     "disclaimer": "Esta calculadora fornece estimativas apenas para fins informativos. Consulte um assessor financeiro antes de tomar decisões.",
     "relatedTools": "Ferramentas Relacionadas"
+  },
+  "compoundInterest": {
+    "principal": "Investimento Inicial",
+    "monthlyContribution": "Contribuição Mensal",
+    "annualRate": "Taxa de Juros Anual",
+    "years": "Período de Investimento (Anos)",
+    "finalAmount": "Valor Final",
+    "totalContributions": "Total de Contribuições",
+    "totalInterestEarned": "Total de Juros Ganhos",
+    "growthChart": "Crescimento ao Longo do Tempo"
+  },
+  "savingsGoal": {
+    "title": "Calculadora de Meta de Poupança",
+    "description": "Calcule quanto tempo levará para atingir sua meta de poupança ou quanto precisa economizar por mês.",
+    "goalAmount": "Valor da Meta",
+    "currentSavings": "Poupança Atual",
+    "monthlyContribution": "Contribuição Mensal",
+    "timeframe": "Prazo (Anos)",
+    "monthsToReach": "Meses para Atingir a Meta",
+    "totalContributions": "Total em Contribuições",
+    "totalInterestEarned": "Total em Juros",
+    "finalAmount": "Valor Final",
+    "isReachable": "Status da Meta",
+    "reachable": "Atingível",
+    "notReachable": "Não Atingível",
+    "shortfall": "Déficit",
+    "requiredMonthly": "Contribuição Necessária",
+    "progressChart": "Progresso da Poupança ao Longo do Tempo",
+    "month": "Mês",
+    "balance": "Saldo",
+    "contributions": "Contribuições",
+    "interest": "Juros"
   }
 }
