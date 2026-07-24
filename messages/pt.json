@@ -109,5 +109,22 @@
     "balance": "Saldo",
     "contributions": "Contribuições",
     "interest": "Juros"
+  },
+  "debtPayoff": {
+    "debtName": "Nome da Dívida",
+    "balance": "Saldo",
+    "interestRate": "Taxa de Juros",
+    "minimumPayment": "Pagamento Mínimo",
+    "addDebt": "Adicionar Dívida",
+    "removeDebt": "Remover",
+    "avalanche": "Avalanche",
+    "snowball": "Snowball",
+    "compare": "Comparar",
+    "totalMonths": "Total de Meses",
+    "totalInterestPaid": "Total em Juros",
+    "totalAmountPaid": "Total Pago",
+    "compareMethods": "Comparar Métodos",
+    "payoffProgress": "Progresso do Pagamento",
+    "remainingBalance": "Saldo Restante"
   }
 }

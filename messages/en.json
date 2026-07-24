@@ -109,5 +109,22 @@
     "balance": "Balance",
     "contributions": "Contributions",
     "interest": "Interest"
+  },
+  "debtPayoff": {
+    "debtName": "Debt Name",
+    "balance": "Balance",
+    "interestRate": "Interest Rate",
+    "minimumPayment": "Minimum Payment",
+    "addDebt": "Add Debt",
+    "removeDebt": "Remove",
+    "avalanche": "Avalanche",
+    "snowball": "Snowball",
+    "compare": "Compare",
+    "totalMonths": "Total Months",
+    "totalInterestPaid": "Total Interest Paid",
+    "totalAmountPaid": "Total Amount Paid",
+    "compareMethods": "Compare Methods",
+    "payoffProgress": "Payoff Progress",
+    "remainingBalance": "Remaining Balance"
   }
 }
