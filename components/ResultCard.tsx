@@ -19,22 +19,24 @@ export default function ResultCard({
 }: ResultCardProps) {
   return (
     <div
-      className={`border-[5px] border-black p-5 shadow-[6px_6px_0_#000] ${
+      className={`border-[5px] border-black p-5 shadow-[6px_6px_0_#000] flex flex-col justify-between w-full h-full min-w-0 ${
         highlight ? "bg-yellow-300" : "bg-white"
       }`}
     >
-      <div className="mb-2 flex items-center gap-2">
-        {icon && <span className="text-black">{icon}</span>}
-        <span className="text-xs font-black uppercase tracking-widest text-black/70">
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <span className="font-mono text-xs font-black uppercase tracking-wider text-black break-words leading-tight">
           {label}
         </span>
+        {icon && <div className="shrink-0">{icon}</div>}
       </div>
-      <div className="text-2xl font-black uppercase tracking-tight text-black md:text-3xl">
-        {value}
+      <div>
+        <div className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-black break-all leading-none">
+          {value}
+        </div>
+        {subtext && (
+          <p className="text-xs font-bold text-neutral-600 mt-2">{subtext}</p>
+        )}
       </div>
-      {subtext && (
-        <div className="mt-1 text-xs font-bold text-black/60">{subtext}</div>
-      )}
     </div>
   );
 }

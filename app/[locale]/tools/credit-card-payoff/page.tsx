@@ -183,7 +183,6 @@ export default function CreditCardPayoffPage() {
               onChange={(e) => updateDebt(index, "interestRate", Number(e.target.value))}
               min={0}
               max={100}
-              step={0.01}
             />
             <CurrencyInput
               label={t("creditCard.minimumPayment")}

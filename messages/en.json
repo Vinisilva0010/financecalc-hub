@@ -126,5 +126,29 @@
     "compareMethods": "Compare Methods",
     "payoffProgress": "Payoff Progress",
     "remainingBalance": "Remaining Balance"
+  },
+  "investmentReturn": {
+    "title": "Investment Return / CAGR Calculator",
+    "description": "Calculate your total investment return, annualized gain (CAGR), and total profit over time.",
+    "initialInvestment": "Initial Investment",
+    "finalValue": "Final Value / Current Value",
+    "years": "Investment Period (Years)",
+    "cagr": "Compound Annual Growth Rate (CAGR)",
+    "totalReturn": "Total Return",
+    "totalGain": "Total Gain / Profit",
+    "growthChart": "Investment Growth Trajectory"
+  },
+  "affordability": {
+    "title": "Home Affordability Calculator",
+    "description": "Estimate how much home you can afford based on your income, monthly debts, and down payment.",
+    "annualIncome": "Annual Income",
+    "monthlyDebts": "Monthly Debts",
+    "downPayment": "Down Payment",
+    "interestRate": "Interest Rate (%)",
+    "loanTermYears": "Loan Term (Years)",
+    "maxHomePrice": "Maximum Home Price",
+    "maxLoanAmount": "Maximum Loan Amount",
+    "maxMonthlyPayment": "Max Monthly Payment",
+    "recommendedBudget": "Recommended Budget"
   }
 }

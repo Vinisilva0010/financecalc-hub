@@ -126,5 +126,29 @@
     "compareMethods": "Comparar Métodos",
     "payoffProgress": "Progresso do Pagamento",
     "remainingBalance": "Saldo Restante"
+  },
+  "investmentReturn": {
+    "title": "Calculadora de Retorno de Investimento / CAGR",
+    "description": "Calcule o retorno total do seu investimento, taxa anualizada (CAGR) e lucro acumulado.",
+    "initialInvestment": "Investimento Inicial",
+    "finalValue": "Valor Final / Valor Atual",
+    "years": "Período do Investimento (Anos)",
+    "cagr": "Taxa Anual de Crescimento Composto (CAGR)",
+    "totalReturn": "Retorno Total",
+    "totalGain": "Lucro Total",
+    "growthChart": "Trajetória de Crescimento do Investimento"
+  },
+  "affordability": {
+    "title": "Calculadora de Capacidade de Compra de Imóvel",
+    "description": "Estime o valor máximo de imóvel que você pode comprar com base na sua renda, dívidas e entrada.",
+    "annualIncome": "Renda Anual",
+    "monthlyDebts": "Dívidas Mensais",
+    "downPayment": "Entrada",
+    "interestRate": "Taxa de Juros Anual (%)",
+    "loanTermYears": "Prazo do Financiamento (Anos)",
+    "maxHomePrice": "Preço Máximo do Imóvel",
+    "maxLoanAmount": "Empréstimo Máximo",
+    "maxMonthlyPayment": "Parcela Mensal Máxima",
+    "recommendedBudget": "Orçamento Recomendado"
   }
 }
