@@ -42,18 +42,23 @@
     "affordability": "Calculadora de Acessibilidade",
     "affordabilityDesc": "Descubra quanto de casa ou empréstimo você consegue pagar de forma realista com sua renda."
   },
-  "creditCard": {
-    "avalanche": "Método Avalanche",
-    "snowball": "Método Snowball",
-    "totalMonths": "Total de Meses para Quitar",
-    "totalInterestPaid": "Total de Juros Pagos",
-    "totalAmountPaid": "Valor Total Pago",
-    "compareMethods": "Comparar Métodos",
-    "addDebt": "Adicionar Dívida",
-    "balance": "Saldo",
-    "minimumPayment": "Pagamento Mínimo",
-    "payoffProgress": "Progresso de Quitação",
-    "remainingBalance": "Saldo Restante"
+  "features": {
+    "title": "CONSTRUÍDO PARA DECISÕES FINANCEIRAS DE ALTA PRECISÃO",
+    "subtitle": "Ferramentas rápidas, precisas e 100% privadas. Seus dados nunca saem do seu dispositivo.",
+    "p1Title": "PRECISÃO DECIMAL",
+    "p1Desc": "Eliminamos erros de arredondamento usando matemática decimal de nível bancário.",
+    "p2Title": "100% NO NAVEGADOR",
+    "p2Desc": "Seus dados nunca saem do seu dispositivo. Zero rastreamento, zero armazenamento.",
+    "p3Title": "COMPARAÇÃO INSTANTÂNEA",
+    "p3Desc": "Analise tempo de quitação, total de juros e projeções lado a lado."
+  },
+  "stats": {
+    "s1Val": "100%",
+    "s1Label": "GRATUITO E ABERTO",
+    "s2Val": "0.00ms",
+    "s2Label": "LATÊNCIA DO SERVIDOR",
+    "s3Val": "100%",
+    "s3Label": "PRIVACIDADE GARANTIDA"
   },
   "ctaFinal": {
     "title": "PRONTO PARA TOMAR DECISÕES FINANCEIRAS MAIS INTELIGENTES?",
@@ -77,6 +82,19 @@
     "shareResult": "Compartilhar Resultado",
     "disclaimer": "Esta calculadora fornece estimativas apenas para fins informativos. Consulte um assessor financeiro antes de tomar decisões.",
     "relatedTools": "Ferramentas Relacionadas"
+  },
+  "creditCard": {
+    "avalanche": "Método Avalanche",
+    "snowball": "Método Snowball",
+    "totalMonths": "Total de Meses para Quitar",
+    "totalInterestPaid": "Total de Juros Pagos",
+    "totalAmountPaid": "Valor Total Pago",
+    "compareMethods": "Comparar Métodos",
+    "addDebt": "Adicionar Dívida",
+    "balance": "Saldo",
+    "minimumPayment": "Pagamento Mínimo",
+    "payoffProgress": "Progresso de Quitação",
+    "remainingBalance": "Saldo Restante"
   },
   "compoundInterest": {
     "principal": "Investimento Inicial",

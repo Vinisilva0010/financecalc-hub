@@ -42,18 +42,23 @@
     "affordability": "Affordability Calculator",
     "affordabilityDesc": "Discover how much house or loan you can realistically afford based on your income."
   },
-  "creditCard": {
-    "avalanche": "Avalanche Method",
-    "snowball": "Snowball Method",
-    "totalMonths": "Total Months to Payoff",
-    "totalInterestPaid": "Total Interest Paid",
-    "totalAmountPaid": "Total Amount Paid",
-    "compareMethods": "Compare Methods",
-    "addDebt": "Add Debt",
-    "balance": "Balance",
-    "minimumPayment": "Minimum Payment",
-    "payoffProgress": "Payoff Progress",
-    "remainingBalance": "Remaining Balance"
+  "features": {
+    "title": "BUILT FOR HIGH-PRECISION FINANCIAL DECISIONS",
+    "subtitle": "Fast, accurate and 100% private tools. Your data never leaves your device.",
+    "p1Title": "DECIMAL PRECISION",
+    "p1Desc": "We eliminate rounding errors using bank-level decimal mathematics.",
+    "p2Title": "100% IN THE BROWSER",
+    "p2Desc": "Your data never leaves your device. Zero tracking, zero storage.",
+    "p3Title": "INSTANT COMPARISON",
+    "p3Desc": "Analyze payoff time, total interest and projections side by side."
+  },
+  "stats": {
+    "s1Val": "100%",
+    "s1Label": "FREE & OPEN",
+    "s2Val": "0.00ms",
+    "s2Label": "SERVER LATENCY",
+    "s3Val": "100%",
+    "s3Label": "PRIVACY GUARANTEED"
   },
   "ctaFinal": {
     "title": "READY TO MAKE SMARTER FINANCIAL DECISIONS?",
@@ -77,6 +82,19 @@
     "shareResult": "Share Result",
     "disclaimer": "This calculator provides estimates for informational purposes only. Consult a financial advisor before making decisions.",
     "relatedTools": "Related Tools"
+  },
+  "creditCard": {
+    "avalanche": "Avalanche Method",
+    "snowball": "Snowball Method",
+    "totalMonths": "Total Months to Payoff",
+    "totalInterestPaid": "Total Interest Paid",
+    "totalAmountPaid": "Total Amount Paid",
+    "compareMethods": "Compare Methods",
+    "addDebt": "Add Debt",
+    "balance": "Balance",
+    "minimumPayment": "Minimum Payment",
+    "payoffProgress": "Payoff Progress",
+    "remainingBalance": "Remaining Balance"
   },
   "compoundInterest": {
     "principal": "Initial Investment",
