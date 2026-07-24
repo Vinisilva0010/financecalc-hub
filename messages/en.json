@@ -168,5 +168,42 @@
     "maxLoanAmount": "Maximum Loan Amount",
     "maxMonthlyPayment": "Max Monthly Payment",
     "recommendedBudget": "Recommended Budget"
+  },
+  "about": {
+    "title": "About FinanceCalc Hub",
+    "subtitle": "Engineered for high-precision, privacy-first financial decisions.",
+    "missionTitle": "Our Mission",
+    "missionDesc": "FinanceCalc Hub was created to eliminate financial ambiguity. Standard web calculators often use floating-point math that introduces rounding errors over long amortization schedules. We build bank-grade calculators powered by Decimal.js that execute 100% in your browser.",
+    "authorTitle": "Engineering & Mathematical Rigor",
+    "authorDesc": "Built and maintained by software engineers and systems architects focused on high-performance fintech algorithms. Every formula is cross-verified against standard financial amortization methods (SAC, Price, Compound Interest algorithms).",
+    "transparencyTitle": "Monetization & Ads Transparency",
+    "transparencyDesc": "FinanceCalc Hub is 100% free to use. To maintain infrastructure without charging users or collecting personal data, we display third-party advertisements (such as Google AdSense). Ads do not influence calculation formulas or recommendations."
+  },
+  "disclaimer": {
+    "title": "Financial Disclaimer",
+    "subtitle": "Important legal information regarding tool estimates.",
+    "content1": "The calculators, tools, and content provided on FinanceCalc Hub are for educational and informational purposes only. They do not constitute formal financial, investment, legal, or tax advice.",
+    "content2": "All calculations are mathematical estimates based on user inputs. Actual loan terms, interest rates, mortgage payments, and investment yields may vary based on lender policies, credit scores, regional taxes, and market conditions.",
+    "content3": "Always consult with a licensed financial advisor, certified accountant, or qualified mortgage specialist before entering into any binding financial agreements or contracts."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "Your financial data belongs to you. Zero server storage.",
+    "section1Title": "1. Client-Side Processing",
+    "section1Desc": "All inputs entered into our calculators (loan amounts, salaries, interest rates) are processed entirely within your local browser JavaScript engine. No financial numbers are ever sent to, saved on, or processed by our backend servers.",
+    "section2Title": "2. Cookies & Third-Party Advertising",
+    "section2Desc": "We use third-party advertising services (such as Google AdSense) to keep this site free. These vendors may use cookies or web beacons to serve ads based on your visit. You can opt out of personalized advertising by visiting Google Ad Settings.",
+    "section3Title": "3. Analytics",
+    "section3Desc": "We collect anonymous, aggregated traffic statistics (e.g., pageviews, browser type) to improve user experience. No personally identifiable information (PII) is tracked or sold."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "subtitle": "Rules and conditions for using FinanceCalc Hub.",
+    "section1Title": "1. Acceptable Use",
+    "section1Desc": "FinanceCalc Hub provides free financial calculation tools. You agree to use these tools for personal or legitimate business estimation purposes without attempting to reverse-engineer, scrape, or flood our servers.",
+    "section2Title": "2. No Warranties",
+    "section2Desc": "All tools are provided AS IS without express or implied warranties. While we strive for 100% mathematical precision using arbitrary-precision libraries, we are not liable for financial decisions or discrepancies resulting from tool outputs.",
+    "section3Title": "3. Modifications",
+    "section3Desc": "We reserve the right to update calculation models, site features, or terms at any time without prior notice."
   }
 }

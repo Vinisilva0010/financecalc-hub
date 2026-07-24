@@ -168,5 +168,42 @@
     "maxLoanAmount": "Empréstimo Máximo",
     "maxMonthlyPayment": "Parcela Mensal Máxima",
     "recommendedBudget": "Orçamento Recomendado"
+  },
+  "about": {
+    "title": "Sobre o FinanceCalc Hub",
+    "subtitle": "Desenvolvido para decisões financeiras de alta precisão e privacidade total.",
+    "missionTitle": "Nossa Missão",
+    "missionDesc": "O FinanceCalc Hub foi criado para eliminar a ambiguidade financeira. Calculadoras web comuns usam ponto flutuante padrão que introduz erros de arredondamento em cronogramas longos. Criamos ferramentas com precisão decimal exalta (Decimal.js) que executam 100% no seu navegador.",
+    "authorTitle": "Engenharia e Rigor Matemático",
+    "authorDesc": "Desenvolvido e mantido por engenheiros de software e arquitetos de sistemas focados em algoritmos financeiros de alta performance. Todas as fórmulas são validadas contra tabelas padrão de amortização (SAC, Price e Juros Compostos).",
+    "transparencyTitle": "Monetização e Transparência com Anúncios",
+    "transparencyDesc": "O FinanceCalc Hub é 100% gratuito. Para manter a infraestrutura sem cobrar nada e sem coletar dados pessoais, exibimos anúncios de terceiros (como Google AdSense). Os anúncios não influenciam os resultados nem as fórmulas."
+  },
+  "disclaimer": {
+    "title": "Isenção de Responsabilidade Financeira",
+    "subtitle": "Informações legais importantes sobre as estimativas das ferramentas.",
+    "content1": "As calculadoras, ferramentas e conteúdos do FinanceCalc Hub destinam-se exclusivamente a fins educativos e informativos. Não constituem aconselhamento financeiro, jurídico, de investimentos ou tributário.",
+    "content2": "Todos os resultados são estimativas matemáticas baseadas nos dados inseridos pelo usuário. Termos reais de empréstimos, taxas de juros, parcelas e rendimentos variam de acordo com instituições financeiras, score de crédito e impostos.",
+    "content3": "Sempre consulte um planejador financeiro certificado, contador ou especialista de crédito antes de assinar contratos ou fechar compromissos financeiros."
+  },
+  "privacy": {
+    "title": "Política de Privacidade",
+    "subtitle": "Seus dados financeiros pertencem a você. Zero armazenamento em servidor.",
+    "section1Title": "1. Processamento no Navegador",
+    "section1Desc": "Todos os valores digitados (valores de empréstimos, salários, juros) são processados inteiramente no motor JavaScript do seu próprio navegador. Nenhum dado financeiro é enviado, salvo ou armazenado em nossos servidores.",
+    "section2Title": "2. Cookies e Anúncios de Terceiros",
+    "section2Desc": "Usamos provedores de anúncios de terceiros (como Google AdSense) para manter o site gratuito. Esses parceiros podem usar cookies para exibir anúncios com base nas suas visitas. Você pode gerenciar suas preferências nas configurações de anúncios do Google.",
+    "section3Title": "3. Análise de Tráfego",
+    "section3Desc": "Coletamos dados anônimos e agregados de tráfego (como páginas vistas e tipo de navegador) para melhorar a usabilidade. Nenhuma informação pessoal identificável é rastreada ou vendida."
+  },
+  "terms": {
+    "title": "Termos de Serviço",
+    "subtitle": "Regras e condições para uso do FinanceCalc Hub.",
+    "section1Title": "1. Uso Aceitável",
+    "section1Desc": "O FinanceCalc Hub disponibiliza calculadoras financeiras gratuitas. Você concorda em usar as ferramentas para fins pessoais ou de simulação comercial legítima, sem tentar engenharia reversa ou ataques de sobrecarga.",
+    "section2Title": "2. Ausência de Garantias Comerciais",
+    "section2Desc": "Todas as ferramentas são fornecidas NO ESTADO EM QUE SE ENCONTRAM. Embora busquemos 100% de precisão matemática com bibliotecas de precisão arbitrária, não nos responsabilizamos por decisões tomadas com base nas estimativas.",
+    "section3Title": "3. Modificações",
+    "section3Desc": "Reservamo-nos o direito de atualizar modelos de cálculo, recursos do site ou termos de serviço a qualquer momento sem aviso prévio."
   }
 }
