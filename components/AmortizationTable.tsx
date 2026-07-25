@@ -1,112 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale } from "next-intl";
-import { ChevronDown, ChevronUp } from "lucide-react";
 
-interface AmortizationRow {
-  paymentNumber: number;
-  payment: number;
-  principal: number;
-  interest: number;
-  balance: number;
+export interface AmortizationRow {
+  period?: number;
+  month?: number;
+  payment: string | number;
+  principal: string | number;
+  interest: string | number;
+  balance: string | number;
+  totalInterest?: string | number;
 }
 
-interface AmortizationTableProps {
-  data: AmortizationRow[];
-  currencySymbol: string;
+export interface AmortizationTableProps {
+  data?: AmortizationRow[];
+  schedule?: AmortizationRow[];
+  currencySymbol?: string;
 }
 
-export default function AmortizationTable({
-  data,
-  currencySymbol,
-}: AmortizationTableProps) {
-  const locale = useLocale();
+export default function AmortizationTable({ data, schedule, currencySymbol }: AmortizationTableProps) {
   const [showAll, setShowAll] = useState(false);
-  const displayData = showAll ? data : data.slice(0, 12);
+  const activeSchedule = data ?? schedule;
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
-      style: "decimal",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
-  };
+  if (!activeSchedule || !Array.isArray(activeSchedule) || activeSchedule.length === 0) {
+    return null;
+  }
+
+  const displayedSchedule = showAll ? activeSchedule : activeSchedule.slice(0, 12);
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-black uppercase tracking-tight text-black">
+    <div>
+      <h3 className="text-2xl font-black uppercase mb-4 text-black border-b-[4px] border-black pb-2">
         Amortization Schedule
       </h3>
 
       <div className="overflow-x-auto border-[4px] border-black">
-        <table className="w-full border-collapse">
+        <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-black text-white">
-              <th className="border-r-[3px] border-white px-4 py-3 text-left text-xs font-black uppercase tracking-wider">
-                #
-              </th>
-              <th className="border-r-[3px] border-white px-4 py-3 text-right text-xs font-black uppercase tracking-wider">
-                Payment
-              </th>
-              <th className="border-r-[3px] border-white px-4 py-3 text-right text-xs font-black uppercase tracking-wider">
-                Principal
-              </th>
-              <th className="border-r-[3px] border-white px-4 py-3 text-right text-xs font-black uppercase tracking-wider">
-                Interest
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-black uppercase tracking-wider">
-                Balance
-              </th>
+            <tr className="border-b-[4px] border-black bg-yellow-300 text-black text-xs font-black uppercase">
+              <th className="p-3 border-r-[3px] border-black">#</th>
+              <th className="p-3 border-r-[3px] border-black">Payment ({currencySymbol})</th>
+              <th className="p-3 border-r-[3px] border-black">Principal</th>
+              <th className="p-3 border-r-[3px] border-black">Interest</th>
+              <th className="p-3">Balance</th>
             </tr>
           </thead>
-          <tbody>
-            {displayData.map((row, index) => (
-              <tr
-                key={row.paymentNumber}
-                className={`${
-                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                } border-b-[2px] border-black transition-colors hover:bg-yellow-100`}
-              >
-                <td className="border-r-[2px] border-black px-4 py-2.5 text-sm font-black">
-                  {row.paymentNumber}
-                </td>
-                <td className="border-r-[2px] border-black px-4 py-2.5 text-right text-sm font-bold">
-                  {currencySymbol}
-                  {formatCurrency(row.payment)}
-                </td>
-                <td className="border-r-[2px] border-black px-4 py-2.5 text-right text-sm font-bold">
-                  {currencySymbol}
-                  {formatCurrency(row.principal)}
-                </td>
-                <td className="border-r-[2px] border-black px-4 py-2.5 text-right text-sm font-bold">
-                  {currencySymbol}
-                  {formatCurrency(row.interest)}
-                </td>
-                <td className="px-4 py-2.5 text-right text-sm font-bold">
-                  {currencySymbol}
-                  {formatCurrency(row.balance)}
-                </td>
+          <tbody className="divide-y-[2px] divide-black font-bold text-xs">
+            {displayedSchedule.map((row, idx) => (
+              <tr key={row.period ?? row.month ?? idx} className="hover:bg-yellow-50">
+                <td className="p-3 border-r-[2px] border-black font-mono">{row.period ?? row.month ?? idx + 1}</td>
+                <td className="p-3 border-r-[2px] border-black">{row.payment}</td>
+                <td className="p-3 border-r-[2px] border-black">{row.principal}</td>
+                <td className="p-3 border-r-[2px] border-black text-red-600">{row.interest}</td>
+                <td className="p-3 font-mono">{row.balance}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {data.length > 12 && (
+      {activeSchedule.length > 12 && (
         <button
           onClick={() => setShowAll(!showAll)}
-          className="flex w-full items-center justify-center gap-2 border-[4px] border-black bg-white py-3 text-sm font-black uppercase tracking-widest shadow-[4px_4px_0_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_#000]"
+          className="mt-5 w-full border-[4px] border-black bg-black text-white py-3 px-6 text-xs font-black uppercase tracking-wider shadow-[4px_4px_0_#000] hover:bg-yellow-300 hover:text-black active:translate-x-1 active:translate-y-1 active:shadow-[1px_1px_0_#000] transition-all"
         >
-          {showAll ? (
-            <>
-              Show Less <ChevronUp className="h-4 w-4" />
-            </>
-          ) : (
-            <>
-              Show All {data.length} Payments <ChevronDown className="h-4 w-4" />
-            </>
-          )}
+          {showAll ? "Show Initial 12 Months" : `Show All ${activeSchedule.length} Months`}
         </button>
       )}
     </div>

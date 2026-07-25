@@ -1,29 +1,24 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { AlertTriangle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
-interface DisclaimerProps {
-  className?: string;
-}
+export default function Disclaimer() {
+  const t = useTranslations("common");
 
-export default function Disclaimer({ className = "" }: DisclaimerProps) {
-  const t = useTranslations();
+  let text = "Estimates only. Calculations do not constitute formal financial advice. Always consult a qualified professional before making financial commitments.";
+  
+  try {
+    text = t("disclaimerText");
+  } catch (e) {
+    // Fallback caso a chave não exista no i18n
+  }
 
   return (
-    <div
-      className={`border-[5px] border-black bg-yellow-100 p-6 shadow-[6px_6px_0_#000] ${className}`}
-    >
-      <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center border-[3px] border-black bg-yellow-300">
-          <AlertTriangle className="h-5 w-5 text-black" />
-        </div>
-        <h3 className="text-sm font-black uppercase tracking-widest text-black">
-          {t("common.disclaimer")}
-        </h3>
-      </div>
-      <p className="text-sm font-bold leading-relaxed text-black/80">
-        {t("common.disclaimer")}
+    <div className="border-[5px] border-black bg-yellow-100 p-5 shadow-[6px_6px_0_#000] flex items-start gap-4">
+      <AlertCircle className="w-6 h-6 text-black shrink-0 mt-0.5 stroke-[2.5]" />
+      <p className="text-xs font-bold text-black/90 leading-relaxed">
+        {text}
       </p>
     </div>
   );

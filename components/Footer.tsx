@@ -7,117 +7,126 @@ export default function Footer() {
   const t = useTranslations();
 
   return (
-    <footer className="border-t-[6px] border-black bg-black text-white">
-      <div className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-        {/* Topo do Footer */}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
-          
-          {/* Coluna 1 - Brand */}
-          <div>
-            <h3 className="mb-4 text-2xl font-black uppercase tracking-tight">
-              FinanceCalc Hub
-            </h3>
-            <p className="mb-6 max-w-xs text-sm font-bold leading-relaxed text-white/70">
-              Calculadoras financeiras precisas, rápidas e 100% privadas.
-              Seus dados nunca saem do seu dispositivo.
-            </p>
-            <div className="inline-block border-[3px] border-white bg-yellow-300 px-4 py-1.5">
-              <span className="text-xs font-black uppercase tracking-wider text-black">
-                100% Free
-              </span>
+    <>
+      <footer className="border-t-[6px] border-black bg-black text-white pt-14 pb-28 md:pb-12">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            {/* Coluna 1 */}
+            <div className="space-y-4">
+              <div className="inline-block border-[5px] border-white bg-yellow-300 px-4 py-1.5 text-black font-black uppercase text-2xl shadow-[5px_5px_0_#fff]">
+                FinanceCalc
+              </div>
+              <p className="font-extrabold text-sm text-neutral-300 leading-snug">
+                Fast, accurate, and privacy-focused financial tools.
+              </p>
+            </div>
+
+            {/* Coluna 2 */}
+            <div>
+              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
+                Loans & Debt
+              </h3>
+              <ul className="space-y-2.5 font-bold text-sm">
+                <li>
+                  <Link href="/tools/mortgage-calculator" className="hover:text-yellow-300 hover:underline">
+                    Mortgage Calculator
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/personal-loan-calculator" className="hover:text-yellow-300 hover:underline">
+                    Personal Loan
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/credit-card-payoff" className="hover:text-yellow-300 hover:underline">
+                    Credit Card Payoff
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/debt-payoff" className="hover:text-yellow-300 hover:underline">
+                    Debt Payoff
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Coluna 3 */}
+            <div>
+              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
+                Investments & Savings
+              </h3>
+              <ul className="space-y-2.5 font-bold text-sm">
+                <li>
+                  <Link href="/tools/compound-interest" className="hover:text-yellow-300 hover:underline">
+                    Compound Interest
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/savings-goal" className="hover:text-yellow-300 hover:underline">
+                    Savings Goal
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/investment-return" className="hover:text-yellow-300 hover:underline">
+                    Investment Return
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/affordability" className="hover:text-yellow-300 hover:underline">
+                    Home Affordability
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Coluna 4 */}
+            <div>
+              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
+                Legal
+              </h3>
+              <ul className="space-y-2.5 font-bold text-sm">
+                <li>
+                  <Link href="/about" className="hover:text-yellow-300 hover:underline">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/disclaimer" className="hover:text-yellow-300 hover:underline">
+                    Disclaimer
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy-policy" className="hover:text-yellow-300 hover:underline">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms-of-service" className="hover:text-yellow-300 hover:underline">
+                    Terms of Service
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
 
-          {/* Coluna 2 - Navigation */}
-          <div>
-            <h4 className="mb-5 text-sm font-black uppercase tracking-[2px] text-yellow-300">
-              Navegação
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  {t("nav.home")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tools"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  {t("nav.tools")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  {t("nav.blog")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  {t("nav.about")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Coluna 3 - Legal */}
-          <div>
-            <h4 className="mb-5 text-sm font-black uppercase tracking-[2px] text-yellow-300">
-              Legal
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/disclaimer"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  Disclaimer
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-sm font-bold uppercase tracking-wide text-white transition-colors hover:text-yellow-300"
-                >
-                  Terms of Use
-                </Link>
-              </li>
-            </ul>
+          <div className="border-t-[3px] border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-black text-neutral-400">
+            <p>© {new Date().getFullYear()} FinanceCalc Hub. All rights reserved.</p>
+            <p className="uppercase tracking-widest text-yellow-300 bg-neutral-900 border-[2px] border-yellow-300 px-3 py-1">
+              No signup required • 100% Free
+            </p>
           </div>
         </div>
+      </footer>
 
-        {/* Linha divisória */}
-        <div className="my-10 border-t-[3px] border-white/20"></div>
-
-        {/* Bottom */}
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-center text-xs font-bold text-white/60 md:text-left">
-            © {new Date().getFullYear()} FinanceCalc Hub. All rights reserved.
-          </p>
-
-          <p className="max-w-md text-center text-xs font-bold leading-relaxed text-white/50 md:text-right">
-            This website provides estimates for informational purposes only.
-            Not financial advice.
-          </p>
+      {/* MOBILE ANCHOR AD SLOT */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t-[5px] border-black bg-neutral-900 p-2 text-center">
+        <span className="text-[9px] font-black uppercase tracking-widest text-yellow-300 block mb-0.5">
+          Advertisement
+        </span>
+        <div className="min-h-[50px] flex items-center justify-center text-[11px] font-black text-white uppercase border-[2px] border-neutral-700 bg-black">
+          [ Mobile Anchor Ad Slot ]
         </div>
       </div>
-    </footer>
+    </>
   );
 }

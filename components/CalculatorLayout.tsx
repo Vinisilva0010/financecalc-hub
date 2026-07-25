@@ -2,128 +2,116 @@
 
 import { ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/lib/i18n/routing";
-import { ArrowLeft, Calculator } from "lucide-react";
+import Footer from "@/components/Footer";
+import Disclaimer from "@/components/Disclaimer";
+import RelatedTools from "@/components/RelatedTools";
+import AdBanner from "@/components/AdBanner";
 
 interface CalculatorLayoutProps {
+  children?: ReactNode;
   titleKey: string;
   descriptionKey: string;
-  children: ReactNode;
-  resultSection?: ReactNode;
+  resultSection: ReactNode;
   chartSection?: ReactNode;
+  tableSection?: ReactNode;
   amortizationSection?: ReactNode;
-  explanationSection?: ReactNode;
+  contentSection?: ReactNode;
   relatedTools?: ReactNode;
-  schemaMarkup?: ReactNode;
+  disclaimer?: ReactNode;
+  toolKey?: string;
+  categoryKey?: string;
 }
 
 export default function CalculatorLayout({
+  children,
   titleKey,
   descriptionKey,
-  children,
   resultSection,
   chartSection,
+  tableSection,
   amortizationSection,
-  explanationSection,
+  contentSection,
   relatedTools,
-  schemaMarkup,
+  disclaimer,
+  toolKey = "",
+  categoryKey = "Calculators",
 }: CalculatorLayoutProps) {
   const t = useTranslations();
+  const activeTable = amortizationSection ?? tableSection;
 
   return (
-    <div className="min-h-screen bg-white">
-      {schemaMarkup}
-
-      {/* AdSense Space: Top Banner */}
-      {/* <div className="mx-auto max-w-6xl px-4 py-4">
-        <div className="flex h-24 items-center justify-center border-2 border-dashed border-black/30 bg-gray-100">
-          <span className="text-xs font-bold uppercase tracking-widest text-black/40">AdSense Top Banner</span>
-        </div>
-      </div> */}
-
-      {/* Header */}
-      <div className="border-b-[5px] border-black bg-yellow-300">
-        <div className="mx-auto max-w-6xl px-4 py-6">
-          <Link
-            href="/tools"
-            className="mb-4 inline-flex items-center gap-2 border-[3px] border-black bg-white px-4 py-2 text-xs font-black uppercase tracking-widest shadow-[3px_3px_0_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_#000]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t("nav.tools")}
-          </Link>
-
-          <div className="mt-4 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center border-[4px] border-black bg-white">
-              <Calculator className="h-6 w-6" />
+    <main className="flex-1 bg-white flex flex-col justify-between min-h-screen">
+      <div>
+        {/* HEADER DA CALCULADORA */}
+        <section className="border-b-[6px] border-black bg-yellow-300 py-10 md:py-14">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="mb-4 inline-block border-[4px] border-black bg-white px-3 py-1 font-mono text-xs font-black uppercase shadow-[4px_4px_0_#000]">
+              {categoryKey}
             </div>
-            <div>
-              <h1 className="text-2xl font-black uppercase tracking-tight text-black md:text-4xl">
-                {t(titleKey)}
-              </h1>
-              <p className="text-sm font-bold text-black/70 md:text-base">
-                {t(descriptionKey)}
-              </p>
-            </div>
+            <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-black mb-3">
+              {titleKey.includes(".") ? t(titleKey) : titleKey}
+            </h1>
+            <p className="text-base sm:text-lg font-extrabold text-black/80 max-w-3xl">
+              {descriptionKey.includes(".") ? t(descriptionKey) : descriptionKey}
+            </p>
           </div>
-        </div>
-      </div>
+        </section>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
-          {/* Left Column: Inputs */}
-          <div className="space-y-6">
-            <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
-              <h2 className="mb-6 text-lg font-black uppercase tracking-tight text-black">
-                {t("common.calculate")}
+        {/* CONTAINER DA CALCULADORA */}
+        <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* PAINEL DE INPUTS */}
+            <div className="lg:col-span-5 border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+              <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
+                INPUTS
               </h2>
-              {children}
+              <div className="space-y-6">{children}</div>
             </div>
 
-            {/* AdSense Space: Middle */}
-            {/* <div className="flex h-32 items-center justify-center border-2 border-dashed border-black/30 bg-gray-100">
-              <span className="text-xs font-bold uppercase tracking-widest text-black/40">AdSense In-Content</span>
-            </div> */}
-
-            {explanationSection && (
-              <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
-                {explanationSection}
-              </div>
-            )}
-
-            {amortizationSection && (
-              <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
-                {amortizationSection}
-              </div>
-            )}
-          </div>
-
-          {/* Right Column: Results */}
-          <div className="space-y-6">
-            {resultSection && (
-              <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
+            {/* PAINEL DE RESULTADOS */}
+            <div className="lg:col-span-7 space-y-8">
+              <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+                <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
+                  RESULTS SUMMARY
+                </h2>
                 {resultSection}
               </div>
-            )}
 
-            {chartSection && (
-              <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
-                {chartSection}
-              </div>
-            )}
-
-            {/* AdSense Space: Sidebar */}
-            {/* <div className="flex h-64 items-center justify-center border-2 border-dashed border-black/30 bg-gray-100">
-              <span className="text-xs font-bold uppercase tracking-widest text-black/40">AdSense Sidebar</span>
-            </div> */}
-
-            {relatedTools && (
-              <div className="border-[5px] border-black bg-white p-6 shadow-[8px_8px_0_#000] md:p-8">
-                {relatedTools}
-              </div>
-            )}
+              {/* GRÁFICOS */}
+              {chartSection && (
+                <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+                  {chartSection}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+
+          {/* ADSENSE SLOT */}
+          <AdBanner format="horizontal" className="my-10" />
+
+          {/* TABELA DE AMORTIZAÇÃO */}
+          {activeTable && (
+            <div className="mt-10 border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+              {activeTable}
+            </div>
+          )}
+
+          {/* CONTEÚDO EDUCACIONAL */}
+          {contentSection && (
+            <div className="mt-10 border-[6px] border-black bg-zinc-50 p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+              {contentSection}
+            </div>
+          )}
+
+          {/* DISCLAIMER E FERRAMENTAS RELACIONADAS */}
+          <div className="mt-12 space-y-8">
+            {disclaimer ?? <Disclaimer />}
+            {relatedTools ?? <RelatedTools currentToolKey={toolKey} />}
+          </div>
+        </section>
+      </div>
+
+      <Footer />
+    </main>
   );
 }
