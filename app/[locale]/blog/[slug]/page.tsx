@@ -107,12 +107,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-black uppercase leading-tight tracking-tight text-black mb-6">
-              {frontmatter.title}
-            </h1>
+  {frontmatter.title}
+</h1>
 
-            <p className="text-lg font-bold text-black/80 leading-relaxed border-l-[6px] border-yellow-300 pl-4 py-1 bg-neutral-50">
-              {frontmatter.description}
-            </p>
+{/* Imagem de capa do post */}
+{frontmatter.image && (
+  <div className="mb-8 border-[5px] border-black shadow-[6px_6px_0_#000] overflow-hidden">
+    <img
+      src={frontmatter.image}
+      alt={frontmatter.title}
+      className="w-full h-auto object-cover max-h-[420px]"
+    />
+  </div>
+)}
+
+<p className="text-lg font-bold text-black/80 leading-relaxed border-l-[6px] border-yellow-300 pl-4 py-1 bg-neutral-50">
+  {frontmatter.description}
+</p>
           </div>
         </section>
 

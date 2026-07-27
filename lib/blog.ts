@@ -14,6 +14,7 @@ export interface PostFrontmatter {
   category: string;
   relatedTool: string;
   keywords: string[];
+  image?: string;
   faqs?: { question: string; answer: string }[];
 }
 
