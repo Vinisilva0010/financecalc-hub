@@ -8,100 +8,101 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="border-t-[6px] border-black bg-black text-white pt-14 pb-28 md:pb-12">
+      <footer className="border-t-[6px] border-black bg-black pt-14 pb-28 text-white md:pb-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-            {/* Coluna 1 */}
+          <div className="mb-12 grid grid-cols-1 gap-10 md:grid-cols-4">
+            
+            {/* Coluna 1 - Brand */}
             <div className="space-y-4">
-              <div className="inline-block border-[5px] border-white bg-yellow-300 px-4 py-1.5 text-black font-black uppercase text-2xl shadow-[5px_5px_0_#fff]">
+              <div className="inline-block border-[5px] border-white bg-yellow-300 px-4 py-1.5 text-2xl font-black uppercase text-black shadow-[5px_5px_0_#fff]">
                 FinanceCalc
               </div>
-              <p className="font-extrabold text-sm text-neutral-300 leading-snug">
-                Fast, accurate, and privacy-focused financial tools.
+              <p className="text-sm font-extrabold leading-snug text-neutral-300">
+                {t("footer.description")}
               </p>
             </div>
 
-            {/* Coluna 2 */}
+            {/* Coluna 2 - Loans & Debt */}
             <div>
-              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
-                Loans & Debt
+              <h3 className="mb-4 border-b-[3px] border-yellow-300/40 pb-1 text-base font-black uppercase tracking-wider text-yellow-300">
+                {t("footer.loansTitle")}
               </h3>
-              <ul className="space-y-2.5 font-bold text-sm">
+              <ul className="space-y-2.5 text-sm font-bold">
                 <li>
-                  <Link href="/tools/mortgage-calculator" className="hover:text-yellow-300 hover:underline">
-                    Mortgage Calculator
+                  <Link href="/tools/mortgage-calculator" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.mortgage")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/personal-loan-calculator" className="hover:text-yellow-300 hover:underline">
-                    Personal Loan
+                  <Link href="/tools/personal-loan-calculator" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.personalLoan")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/credit-card-payoff" className="hover:text-yellow-300 hover:underline">
-                    Credit Card Payoff
+                  <Link href="/tools/credit-card-payoff" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.creditCard")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/debt-payoff" className="hover:text-yellow-300 hover:underline">
-                    Debt Payoff
+                  <Link href="/tools/debt-payoff" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.debtPayoff")}
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Coluna 3 */}
+            {/* Coluna 3 - Investments & Savings */}
             <div>
-              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
-                Investments & Savings
+              <h3 className="mb-4 border-b-[3px] border-yellow-300/40 pb-1 text-base font-black uppercase tracking-wider text-yellow-300">
+                {t("footer.investmentsTitle")}
               </h3>
-              <ul className="space-y-2.5 font-bold text-sm">
+              <ul className="space-y-2.5 text-sm font-bold">
                 <li>
-                  <Link href="/tools/compound-interest" className="hover:text-yellow-300 hover:underline">
-                    Compound Interest
+                  <Link href="/tools/compound-interest" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.compoundInterest")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/savings-goal" className="hover:text-yellow-300 hover:underline">
-                    Savings Goal
+                  <Link href="/tools/savings-goal" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.savingsGoal")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/investment-return" className="hover:text-yellow-300 hover:underline">
-                    Investment Return
+                  <Link href="/tools/investment-return" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.investmentReturn")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tools/affordability" className="hover:text-yellow-300 hover:underline">
-                    Home Affordability
+                  <Link href="/tools/affordability" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("tools.affordability")}
                   </Link>
                 </li>
               </ul>
             </div>
 
-            {/* Coluna 4 */}
+            {/* Coluna 4 - Legal */}
             <div>
-              <h3 className="font-black uppercase text-yellow-300 text-base tracking-wider mb-4 border-b-[3px] border-yellow-300/40 pb-1">
-                Legal
+              <h3 className="mb-4 border-b-[3px] border-yellow-300/40 pb-1 text-base font-black uppercase tracking-wider text-yellow-300">
+                {t("footer.legalTitle")}
               </h3>
-              <ul className="space-y-2.5 font-bold text-sm">
+              <ul className="space-y-2.5 text-sm font-bold">
                 <li>
-                  <Link href="/about" className="hover:text-yellow-300 hover:underline">
-                    About Us
+                  <Link href="/about" className="transition-colors hover:text-yellow-300 hover:underline">
+                    {t("nav.about")}
                   </Link>
                 </li>
                 <li>
-                  <Link href="/disclaimer" className="hover:text-yellow-300 hover:underline">
+                  <Link href="/disclaimer" className="transition-colors hover:text-yellow-300 hover:underline">
                     Disclaimer
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="hover:text-yellow-300 hover:underline">
+                  <Link href="/privacy" className="transition-colors hover:text-yellow-300 hover:underline">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terms-of-service" className="hover:text-yellow-300 hover:underline">
+                  <Link href="/terms" className="transition-colors hover:text-yellow-300 hover:underline">
                     Terms of Service
                   </Link>
                 </li>
@@ -109,21 +110,22 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="border-t-[3px] border-neutral-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-black text-neutral-400">
+          {/* Bottom */}
+          <div className="flex flex-col items-center justify-between gap-4 border-t-[3px] border-neutral-800 pt-8 text-xs font-black text-neutral-400 md:flex-row">
             <p>© {new Date().getFullYear()} FinanceCalc Hub. All rights reserved.</p>
-            <p className="uppercase tracking-widest text-yellow-300 bg-neutral-900 border-[2px] border-yellow-300 px-3 py-1">
-              No signup required • 100% Free
+            <p className="border-[2px] border-yellow-300 bg-neutral-900 px-3 py-1 uppercase tracking-widest text-yellow-300">
+              {t("footer.badge")}
             </p>
           </div>
         </div>
       </footer>
 
       {/* MOBILE ANCHOR AD SLOT */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t-[5px] border-black bg-neutral-900 p-2 text-center">
-        <span className="text-[9px] font-black uppercase tracking-widest text-yellow-300 block mb-0.5">
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t-[5px] border-black bg-neutral-900 p-2 text-center md:hidden">
+        <span className="mb-0.5 block text-[9px] font-black uppercase tracking-widest text-yellow-300">
           Advertisement
         </span>
-        <div className="min-h-[50px] flex items-center justify-center text-[11px] font-black text-white uppercase border-[2px] border-neutral-700 bg-black">
+        <div className="flex min-h-[50px] items-center justify-center border-[2px] border-neutral-700 bg-black text-[11px] font-black uppercase text-white">
           [ Mobile Anchor Ad Slot ]
         </div>
       </div>

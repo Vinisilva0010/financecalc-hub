@@ -65,6 +65,13 @@
     "subtitle": "Comece agora. 100% gratuito. Sem enrolação.",
     "button": "EXPLORAR TODAS AS CALCULADORAS"
   },
+  "footer": {
+    "description": "Ferramentas financeiras rápidas, precisas e focadas em privacidade.",
+    "loansTitle": "Empréstimos e Dívidas",
+    "investmentsTitle": "Investimentos e Poupança",
+    "legalTitle": "Legal",
+    "badge": "Sem cadastro • 100% Gratuito"
+  },
   "common": {
     "calculate": "Calcular",
     "reset": "Limpar",
@@ -174,7 +181,7 @@
     "title": "Sobre o FinanceCalc Hub",
     "subtitle": "Desenvolvido para decisões financeiras de alta precisão e privacidade total.",
     "missionTitle": "Nossa Missão",
-    "missionDesc": "O FinanceCalc Hub foi criado para eliminar a ambiguidade financeira. Calculadoras web comuns usam ponto flutuante padrão que introduz erros de arredondamento em cronogramas longos. Criamos ferramentas com precisão decimal exalta (Decimal.js) que executam 100% no seu navegador.",
+    "missionDesc": "O FinanceCalc Hub foi criado para eliminar a ambiguidade financeira. Calculadoras web comuns usam ponto flutuante padrão que introduz erros de arredondamento em cronogramas longos. Criamos ferramentas com precisão decimal exata (Decimal.js) que executam 100% no seu navegador.",
     "authorTitle": "Engenharia e Rigor Matemático",
     "authorDesc": "Desenvolvido e mantido por engenheiros de software e arquitetos de sistemas focados em algoritmos financeiros de alta performance. Todas as fórmulas são validadas contra tabelas padrão de amortização (SAC, Price e Juros Compostos).",
     "transparencyTitle": "Monetização e Transparência com Anúncios",

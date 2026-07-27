@@ -65,6 +65,13 @@
     "subtitle": "Start now. 100% free. No BS.",
     "button": "EXPLORE ALL CALCULATORS"
   },
+  "footer": {
+    "description": "Fast, accurate, and privacy-focused financial tools.",
+    "loansTitle": "Loans & Debt",
+    "investmentsTitle": "Investments & Savings",
+    "legalTitle": "Legal",
+    "badge": "No signup required • 100% Free"
+  },
   "common": {
     "calculate": "Calculate",
     "reset": "Reset",
