@@ -7,7 +7,8 @@
     "home": "Início",
     "tools": "Ferramentas",
     "blog": "Blog",
-    "about": "Sobre"
+    "about": "Sobre",
+    "contact": "Contato"
   },
   "hero": {
     "eyebrow": "FERRAMENTAS FINANCEIRAS GRÁTIS",
@@ -183,7 +184,7 @@
     "missionTitle": "Nossa Missão",
     "missionDesc": "O FinanceCalc Hub foi criado para eliminar a ambiguidade financeira. Calculadoras web comuns usam ponto flutuante padrão que introduz erros de arredondamento em cronogramas longos. Criamos ferramentas com precisão decimal exata (Decimal.js) que executam 100% no seu navegador.",
     "authorTitle": "Engenharia e Rigor Matemático",
-    "authorDesc": "Desenvolvido e mantido por engenheiros de software e arquitetos de sistemas focados em algoritmos financeiros de alta performance. Todas as fórmulas são validadas contra tabelas padrão de amortização (SAC, Price e Juros Compostos).",
+    "authorDesc": "Desenvolvido e mantido por Vinicius Pontual, engenheiro de software focado em algoritmos financeiros de alta performance. Todas as fórmulas são validadas contra tabelas padrão de amortização (SAC, Price e Juros Compostos).",
     "transparencyTitle": "Monetização e Transparência com Anúncios",
     "transparencyDesc": "O FinanceCalc Hub é 100% gratuito. Para manter a infraestrutura sem cobrar nada e sem coletar dados pessoais, exibimos anúncios de terceiros (como Google AdSense). Os anúncios não influenciam os resultados nem as fórmulas."
   },
@@ -213,5 +214,12 @@
     "section2Desc": "Todas as ferramentas são fornecidas NO ESTADO EM QUE SE ENCONTRAM. Embora busquemos 100% de precisão matemática com bibliotecas de precisão arbitrária, não nos responsabilizamos por decisões tomadas com base nas estimativas.",
     "section3Title": "3. Modificações",
     "section3Desc": "Reservamo-nos o direito de atualizar modelos de cálculo, recursos do site ou termos de serviço a qualquer momento sem aviso prévio."
+  },
+  "contact": {
+    "title": "Contato",
+    "subtitle": "Dúvidas, sugestões ou encontrou um erro em alguma calculadora? Lemos todas as mensagens.",
+    "sectionTitle": "Fale Conosco",
+    "sectionDesc": "Para dúvidas sobre nossas calculadoras, correções de conteúdo ou feedback geral, envie um e-mail abaixo. Respondemos em até alguns dias úteis.",
+    "emailLabel": "E-mail"
   }
 }

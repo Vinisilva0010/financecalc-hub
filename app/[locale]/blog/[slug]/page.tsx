@@ -1,11 +1,14 @@
 import { getPostBySlug } from "@/lib/blog";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { MdxLink } from "@/components/mdx-link";
 import { Link } from "@/lib/i18n/routing";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
-import { Calendar, Clock, ArrowLeft, Calculator } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, Calculator, User } from "lucide-react";
 import { Metadata } from "next";
+
+const SITE_URL = "https://financecalc-hub.vercel.app"; // TODO: atualizar quando trocar de dominio
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -44,7 +47,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const { frontmatter, content, readTime } = post;
+  const { frontmatter, content, readTime, author } = post;
 
   // Schema JSON-LD para Google (Article + FAQPage)
   const articleSchema = {
@@ -55,8 +58,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     datePublished: frontmatter.date,
     dateModified: frontmatter.updatedAt,
     author: {
-      "@type": "Organization",
-      name: "FinanceCalc Hub",
+      "@type": "Person",
+      name: author.name,
+      jobTitle: author.role,
+      url: `${SITE_URL}${author.url}`,
     },
   };
 
@@ -97,6 +102,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {frontmatter.category}
               </span>
               <span className="flex items-center gap-1 text-black/70">
+                <User className="w-3.5 h-3.5" />
+                By {author.name}
+              </span>
+              <span className="flex items-center gap-1 text-black/70">
                 <Calendar className="w-3.5 h-3.5" />
                 Updated: {frontmatter.updatedAt}
               </span>
@@ -130,7 +139,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* CONTEÚDO DO POST */}
         <section className="mx-auto max-w-4xl px-4 py-12">
           <article className="prose prose-lg max-w-none font-sans font-medium text-black prose-headings:font-black prose-headings:uppercase prose-h1:text-3xl prose-h2:text-2xl prose-h2:border-b-[4px] prose-h2:border-black prose-h2:pb-2 prose-h2:mt-10 prose-a:font-black prose-a:text-black prose-a:underline prose-blockquote:border-l-[6px] prose-blockquote:border-black prose-blockquote:bg-yellow-300 prose-blockquote:p-4 prose-blockquote:font-bold">
-            <MDXRemote source={content} />
+            <MDXRemote source={content} components={{ a: MdxLink }} />
           </article>
 
           {/* CTA INTERNO PARA A CALCULADORA DO CLUSTER */}

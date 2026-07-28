@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { DEFAULT_AUTHOR } from "@/lib/author";
 
 const POSTS_PATH = path.join(process.cwd(), "content/blog");
 
@@ -13,6 +14,8 @@ export interface PostFrontmatter {
   slug: string;
   category: string;
   relatedTool: string;
+  authorName?: string;
+  authorRole?: string;
   keywords: string[];
   image?: string;
   faqs?: { question: string; answer: string }[];
@@ -21,6 +24,7 @@ export interface PostFrontmatter {
 export interface Post {
   frontmatter: PostFrontmatter;
   content: string;
+  author: typeof DEFAULT_AUTHOR;
   readTime: string;
 }
 
@@ -41,6 +45,11 @@ export function getPostBySlug(slug: string, locale: string): Post | null {
     frontmatter: data as PostFrontmatter,
     content,
     readTime: `${readTimeMinutes} min read`,
+    author: {
+      ...DEFAULT_AUTHOR,
+      name: data.authorName ?? DEFAULT_AUTHOR.name,
+      role: data.authorRole ?? DEFAULT_AUTHOR.role,
+    },
   };
 }
 

@@ -7,7 +7,8 @@
     "home": "Home",
     "tools": "Tools",
     "blog": "Blog",
-    "about": "About"
+    "about": "About",
+    "contact": "Contact"
   },
   "hero": {
     "eyebrow": "FREE FINANCIAL TOOLS",
@@ -183,7 +184,7 @@
     "missionTitle": "Our Mission",
     "missionDesc": "FinanceCalc Hub was created to eliminate financial ambiguity. Standard web calculators often use floating-point math that introduces rounding errors over long amortization schedules. We build bank-grade calculators powered by Decimal.js that execute 100% in your browser.",
     "authorTitle": "Engineering & Mathematical Rigor",
-    "authorDesc": "Built and maintained by software engineers and systems architects focused on high-performance fintech algorithms. Every formula is cross-verified against standard financial amortization methods (SAC, Price, Compound Interest algorithms).",
+    "authorDesc": "Built and maintained by Vinicius Pontual, a software engineer focused on high-performance fintech algorithms. Every formula is cross-verified against standard financial amortization methods (SAC, Price, Compound Interest algorithms).",
     "transparencyTitle": "Monetization & Ads Transparency",
     "transparencyDesc": "FinanceCalc Hub is 100% free to use. To maintain infrastructure without charging users or collecting personal data, we display third-party advertisements (such as Google AdSense). Ads do not influence calculation formulas or recommendations."
   },
@@ -213,5 +214,12 @@
     "section2Desc": "All tools are provided AS IS without express or implied warranties. While we strive for 100% mathematical precision using arbitrary-precision libraries, we are not liable for financial decisions or discrepancies resulting from tool outputs.",
     "section3Title": "3. Modifications",
     "section3Desc": "We reserve the right to update calculation models, site features, or terms at any time without prior notice."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Questions, feedback, or found a bug in a calculator? We read every message.",
+    "sectionTitle": "Get in Touch",
+    "sectionDesc": "For questions about our calculators, corrections to our content, or general feedback, reach out by email below. We aim to respond within a few business days.",
+    "emailLabel": "Email"
   }
 }
