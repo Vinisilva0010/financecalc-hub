@@ -90,7 +90,20 @@
     "shareResult": "Compartilhar Resultado",
     "disclaimer": "Esta calculadora fornece estimativas apenas para fins informativos. Consulte um assessor financeiro antes de tomar decisões.",
     "relatedTools": "Ferramentas Relacionadas",
-    "disclaimerText": "Apenas estimativas. Os cálculos não constituem aconselhamento financeiro formal. Sempre consulte um profissional qualificado antes de fechar compromissos."
+    "disclaimerText": "Apenas estimativas. Os cálculos não constituem aconselhamento financeiro formal. Sempre consulte um profissional qualificado antes de fechar compromissos.",
+    "inputs": "Dados",
+    "resultsSummary": "Resumo dos Resultados",
+    "calculators": "Calculadoras",
+    "amortizationSchedule": "Tabela de Amortização",
+    "tableHeaderPayment": "Parcela",
+    "tableHeaderPrincipal": "Principal",
+    "tableHeaderInterest": "Juros",
+    "tableHeaderBalance": "Saldo",
+    "showInitial12": "Mostrar 12 Meses Iniciais",
+    "showAllMonths": "Mostrar Todos os {count} Meses",
+    "homePrice": "Preço do Imóvel",
+    "loanTermYears": "Prazo do Financiamento (Anos)",
+    "loanTermMonths": "Prazo do Empréstimo (Meses)"
   },
   "creditCard": {
     "avalanche": "Método Avalanche",

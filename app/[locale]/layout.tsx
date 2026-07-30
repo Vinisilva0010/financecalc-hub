@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { Link } from "@/lib/i18n/routing";
+import NextLink from "next/link";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import "@/app/globals.css";
 
@@ -42,12 +43,12 @@ export default async function LocaleLayout({
           {/* Header / Navbar */}
           <header className="sticky top-0 z-50 border-b-[5px] border-black bg-white">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-              <Link
-                href="/"
+              <NextLink
+                href={`/${locale}`}
                 className="text-xl font-black uppercase tracking-tight text-black md:text-2xl"
               >
                 FinanceCalc<span className="text-yellow-500">Hub</span>
-              </Link>
+              </NextLink>
 
               <div className="flex items-center gap-3">
                 <nav className="hidden items-center gap-2 md:flex">
@@ -56,15 +57,25 @@ export default async function LocaleLayout({
                     { href: "/tools", label: "nav.tools" },
                     { href: "/blog", label: "nav.blog" },
                     { href: "/about", label: "nav.about" },
-                  ].map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="border-[3px] border-transparent px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all hover:border-black hover:bg-yellow-300 hover:shadow-[3px_3px_0_#000]"
-                    >
-                      {messages.nav[item.label.split(".")[1]] || item.label}
-                    </Link>
-                  ))}
+                  ].map((item) => {
+                    const navClassName =
+                      "border-[3px] border-transparent px-3 py-1.5 text-xs font-black uppercase tracking-wider transition-all hover:border-black hover:bg-yellow-300 hover:shadow-[3px_3px_0_#000]";
+                    const navLabel = messages.nav[item.label.split(".")[1]] || item.label;
+
+                    if (item.href === "/") {
+                      return (
+                        <NextLink key={item.href} href={`/${locale}`} className={navClassName}>
+                          {navLabel}
+                        </NextLink>
+                      );
+                    }
+
+                    return (
+                      <Link key={item.href} href={item.href} className={navClassName}>
+                        {navLabel}
+                      </Link>
+                    );
+                  })}
                 </nav>
                 <LanguageSwitcher />
               </div>

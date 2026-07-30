@@ -8,7 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import { Calendar, Clock, ArrowLeft, Calculator, User } from "lucide-react";
 import { Metadata } from "next";
 
-const SITE_URL = "https://financecalc-hub.vercel.app"; // TODO: atualizar quando trocar de dominio
+const SITE_URL = "https://financecalchub.zanvexis.com";
 
 interface BlogPostPageProps {
   params: Promise<{

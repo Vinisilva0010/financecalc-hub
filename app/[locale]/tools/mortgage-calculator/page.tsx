@@ -153,6 +153,7 @@ export default function MortgageCalculatorPage() {
           <AmortizationTable
             data={result.amortizationSchedule}
             currencySymbol={currency}
+            formatCurrency={formatCurrency}
           />
         )
       }
@@ -162,22 +163,22 @@ export default function MortgageCalculatorPage() {
     >
       <div className="space-y-6">
         <CurrencyInput
-          label="Home Price"
+          label={t("common.homePrice")}
           error={errors.homePrice?.message}
           {...register("homePrice", { valueAsNumber: true })}
         />
         <CurrencyInput
-          label="Down Payment"
+          label={t("common.downPayment")}
           error={errors.downPayment?.message}
           {...register("downPayment", { valueAsNumber: true })}
         />
         <PercentInput
-          label="Interest Rate"
+          label={t("common.interestRate")}
           error={errors.interestRate?.message}
           {...register("interestRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label="Loan Term (Years)"
+          label={t("common.loanTermYears")}
           error={errors.loanTermYears?.message}
           {...register("loanTermYears", { valueAsNumber: true })}
         />

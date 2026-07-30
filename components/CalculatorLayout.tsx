@@ -34,7 +34,7 @@ export default function CalculatorLayout({
   relatedTools,
   disclaimer,
   toolKey = "",
-  categoryKey = "Calculators",
+  categoryKey = "common.calculators",
 }: CalculatorLayoutProps) {
   const t = useTranslations();
   const activeTable = amortizationSection ?? tableSection;
@@ -46,7 +46,7 @@ export default function CalculatorLayout({
         <section className="border-b-[6px] border-black bg-yellow-300 py-10 md:py-14">
           <div className="mx-auto max-w-6xl px-4">
             <div className="mb-4 inline-block border-[4px] border-black bg-white px-3 py-1 font-mono text-xs font-black uppercase shadow-[4px_4px_0_#000]">
-              {categoryKey}
+              {categoryKey.includes(".") ? t(categoryKey) : categoryKey}
             </div>
             <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-black mb-3">
               {titleKey.includes(".") ? t(titleKey) : titleKey}
@@ -63,7 +63,7 @@ export default function CalculatorLayout({
             {/* PAINEL DE INPUTS */}
             <div className="lg:col-span-5 border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
               <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
-                INPUTS
+                {t("common.inputs")}
               </h2>
               <div className="space-y-6">{children}</div>
             </div>
@@ -72,7 +72,7 @@ export default function CalculatorLayout({
             <div className="lg:col-span-7 space-y-8">
               <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
                 <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
-                  RESULTS SUMMARY
+                  {t("common.resultsSummary")}
                 </h2>
                 {resultSection}
               </div>

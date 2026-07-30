@@ -35,7 +35,7 @@ export default function RelatedTools({ currentToolKey, tools }: RelatedToolsProp
   return (
     <div className="border-[5px] border-black bg-white p-6 shadow-[6px_6px_0_#000]">
       <h3 className="text-xl font-black uppercase text-black mb-4 border-b-[3px] border-black pb-2">
-        Related Financial Tools
+        {t("common.relatedTools")}
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">

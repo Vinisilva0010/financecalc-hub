@@ -159,17 +159,17 @@ export default function PersonalLoanCalculatorPage() {
     >
       <div className="space-y-6">
         <CurrencyInput
-          label="Loan Amount"
+          label={t("common.loanAmount")}
           error={errors.loanAmount?.message}
           {...register("loanAmount", { valueAsNumber: true })}
         />
         <PercentInput
-          label="Interest Rate"
+          label={t("common.interestRate")}
           error={errors.interestRate?.message}
           {...register("interestRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label="Loan Term (Months)"
+          label={t("common.loanTermMonths")}
           error={errors.loanTermMonths?.message}
           {...register("loanTermMonths", { valueAsNumber: true })}
         />

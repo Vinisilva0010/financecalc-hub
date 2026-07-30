@@ -90,7 +90,20 @@
     "shareResult": "Share Result",
     "disclaimer": "This calculator provides estimates for informational purposes only. Consult a financial advisor before making decisions.",
     "relatedTools": "Related Tools",
-    "disclaimerText": "Estimates only. Calculations do not constitute formal financial advice. Always consult a qualified professional before making financial commitments."
+    "disclaimerText": "Estimates only. Calculations do not constitute formal financial advice. Always consult a qualified professional before making financial commitments.",
+    "inputs": "Inputs",
+    "resultsSummary": "Results Summary",
+    "calculators": "Calculators",
+    "amortizationSchedule": "Amortization Schedule",
+    "tableHeaderPayment": "Payment",
+    "tableHeaderPrincipal": "Principal",
+    "tableHeaderInterest": "Interest",
+    "tableHeaderBalance": "Balance",
+    "showInitial12": "Show Initial 12 Months",
+    "showAllMonths": "Show All {count} Months",
+    "homePrice": "Home Price",
+    "loanTermYears": "Loan Term (Years)",
+    "loanTermMonths": "Loan Term (Months)"
   },
   "creditCard": {
     "avalanche": "Avalanche Method",
