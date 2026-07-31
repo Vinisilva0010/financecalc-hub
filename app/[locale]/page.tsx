@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/lib/i18n/routing";
 import Footer from "@/components/Footer";
+import PhoneMockup from "@/components/PhoneMockup";
 import { 
   Home, Calculator, CreditCard, TrendingUp, 
   PiggyBank, Target, BarChart3, ShieldCheck, Zap, Lock, ArrowRight
@@ -22,56 +23,71 @@ export default function HomePage() {
     { key: "affordability", href: "/tools/affordability", icon: Home },
   ];
 
+  // Adicione aqui os caminhos das 3 imagens que você vai colocar na pasta /public
+  const previewImages = [
+    "/previews/calc1.png",
+    "/previews/calc2.png",
+    "/previews/calc3.png",
+  ];
+
   return (
     <main className="flex min-h-screen flex-1 flex-col justify-between bg-white selection:bg-black selection:text-yellow-300">
       <div>
         {/* ==================== HERO ==================== */}
         <section className="relative overflow-hidden border-b-[6px] border-black bg-white">
           <div className="mx-auto max-w-6xl px-4 py-12 md:py-20">
-            <div className="max-w-5xl">
-              <div className="mb-6 inline-block border-[5px] border-black bg-yellow-300 px-5 py-2 shadow-[6px_6px_0_#000]">
-                <p className="font-mono text-xs font-black uppercase tracking-[3px] text-black md:text-sm">
-                  {t("hero.eyebrow")}
+            <div className="flex flex-col items-center justify-between gap-12 lg:flex-row">
+              {/* LADO ESQUERDO: CONTEÚDO ORIGINAL */}
+              <div className="w-full lg:max-w-2xl">
+                <div className="mb-6 inline-block border-[5px] border-black bg-yellow-300 px-5 py-2 shadow-[6px_6px_0_#000]">
+                  <p className="font-mono text-xs font-black uppercase tracking-[3px] text-black md:text-sm">
+                    {t("hero.eyebrow")}
+                  </p>
+                </div>
+
+                <h1 className="mb-6 text-[42px] font-black uppercase leading-[0.9] tracking-[-3px] text-black sm:text-[56px] md:text-7xl lg:text-8xl">
+                  {t("hero.title")}
+                </h1>
+
+                <p className="mb-8 max-w-3xl text-[18px] font-extrabold leading-tight text-black sm:text-[22px] md:text-2xl">
+                  {t("hero.subtitle")}
                 </p>
+
+                {/* Trust signals */}
+                <div className="mb-10 flex flex-wrap gap-x-4 gap-y-3 text-xs font-black uppercase text-black sm:text-sm">
+                  <span className="border-[4px] border-black bg-yellow-300 px-4 py-1.5 shadow-[4px_4px_0_#000]">
+                    {t("trust.free")}
+                  </span>
+                  <span className="border-[4px] border-black bg-white px-4 py-1.5 shadow-[4px_4px_0_#000]">
+                    {t("trust.noSignup")}
+                  </span>
+                  <span className="border-[4px] border-black bg-black px-4 py-1.5 text-white shadow-[4px_4px_0_#000]">
+                    {t("trust.updated")}
+                  </span>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex flex-col gap-5 sm:flex-row">
+                  <Link
+                    href="/tools"
+                    className="flex w-full items-center justify-center gap-3 border-[6px] border-black bg-yellow-300 px-10 py-5 text-center text-xl font-black uppercase tracking-tight text-black shadow-[8px_8px_0_#000] transition-all hover:bg-yellow-400 active:translate-x-1.5 active:translate-y-1.5 active:shadow-[2px_2px_0_#000] sm:w-auto"
+                  >
+                    <span>{t("hero.ctaPrimary")}</span>
+                    <ArrowRight className="h-6 w-6 stroke-[3]" />
+                  </Link>
+
+                  <Link
+                    href="/blog"
+                    className="flex w-full items-center justify-center border-[6px] border-black bg-white px-10 py-5 text-center text-xl font-black uppercase tracking-tight text-black shadow-[8px_8px_0_#000] transition-all hover:bg-zinc-100 active:translate-x-1.5 active:translate-y-1.5 active:shadow-[2px_2px_0_#000] sm:w-auto"
+                  >
+                    {t("hero.ctaSecondary")}
+                  </Link>
+                </div>
               </div>
 
-              <h1 className="mb-6 text-[42px] font-black uppercase leading-[0.9] tracking-[-3px] text-black sm:text-[56px] md:text-7xl lg:text-8xl">
-                {t("hero.title")}
-              </h1>
-
-              <p className="mb-8 max-w-3xl text-[18px] font-extrabold leading-tight text-black sm:text-[22px] md:text-2xl">
-                {t("hero.subtitle")}
-              </p>
-
-              {/* Trust signals */}
-              <div className="mb-10 flex flex-wrap gap-x-4 gap-y-3 text-xs font-black uppercase text-black sm:text-sm">
-                <span className="border-[4px] border-black bg-yellow-300 px-4 py-1.5 shadow-[4px_4px_0_#000]">
-                  {t("trust.free")}
-                </span>
-                <span className="border-[4px] border-black bg-white px-4 py-1.5 shadow-[4px_4px_0_#000]">
-                  {t("trust.noSignup")}
-                </span>
-                <span className="border-[4px] border-black bg-black px-4 py-1.5 text-white shadow-[4px_4px_0_#000]">
-                  {t("trust.updated")}
-                </span>
-              </div>
-
-              {/* Buttons */}
-              <div className="flex flex-col gap-5 sm:flex-row">
-                <Link
-                  href="/tools"
-                  className="flex w-full items-center justify-center gap-3 border-[6px] border-black bg-yellow-300 px-10 py-5 text-center text-xl font-black uppercase tracking-tight text-black shadow-[8px_8px_0_#000] transition-all hover:bg-yellow-400 active:translate-x-1.5 active:translate-y-1.5 active:shadow-[2px_2px_0_#000] sm:w-auto"
-                >
-                  <span>{t("hero.ctaPrimary")}</span>
-                  <ArrowRight className="h-6 w-6 stroke-[3]" />
-                </Link>
-
-                <Link
-                  href="/blog"
-                  className="flex w-full items-center justify-center border-[6px] border-black bg-white px-10 py-5 text-center text-xl font-black uppercase tracking-tight text-black shadow-[8px_8px_0_#000] transition-all hover:bg-zinc-100 active:translate-x-1.5 active:translate-y-1.5 active:shadow-[2px_2px_0_#000] sm:w-auto"
-                >
-                  {t("hero.ctaSecondary")}
-                </Link>
+              {/* LADO DIREITO: CELULAR MOCKUP */}
+              <div className="flex w-full justify-center lg:w-auto">
+                <PhoneMockup images={previewImages} />
               </div>
             </div>
           </div>
