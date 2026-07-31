@@ -50,7 +50,11 @@ export default async function BlogListPage({ params }: BlogPageProps) {
                 >
                   {/* Imagem do post */}
                   {post.image && (
-                    <Link href={`/blog/${post.slug}`} className="block overflow-hidden border-b-[5px] border-black">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      locale={locale}
+                      className="block overflow-hidden border-b-[5px] border-black"
+                    >
                       <img
                         src={post.image}
                         alt={post.title}
@@ -72,7 +76,7 @@ export default async function BlogListPage({ params }: BlogPageProps) {
                       </div>
 
                       <h2 className="mb-3 text-2xl font-black uppercase tracking-tight text-black hover:underline">
-                        <Link href={`/blog/${post.slug}`}>
+                        <Link href={`/blog/${post.slug}`} locale={locale}>
                           {post.title}
                         </Link>
                       </h2>
@@ -84,6 +88,7 @@ export default async function BlogListPage({ params }: BlogPageProps) {
 
                     <Link
                       href={`/blog/${post.slug}`}
+                      locale={locale}
                       className="inline-flex items-center gap-2 self-start border-[4px] border-black bg-black px-5 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-colors hover:bg-yellow-300 hover:text-black"
                     >
                       <span>Read Guide</span>

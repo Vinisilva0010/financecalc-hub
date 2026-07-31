@@ -29,10 +29,28 @@ export interface Post {
 }
 
 export function getPostBySlug(slug: string, locale: string): Post | null {
-  const fullPath = path.join(POSTS_PATH, `${slug}.${locale}.mdx`);
-  
-  if (!fs.existsSync(fullPath)) {
+  if (!fs.existsSync(POSTS_PATH)) {
     return null;
+  }
+
+  // Tenta pelo caminho direto tradicional
+  const directPath = path.join(POSTS_PATH, `${slug}.${locale}.mdx`);
+  let fullPath = directPath;
+
+  if (!fs.existsSync(directPath)) {
+    // Se não achar direto pelo nome do arquivo, varre a pasta procurando o slug no frontmatter
+    const files = fs.readdirSync(POSTS_PATH).filter((f) => f.endsWith(`.${locale}.mdx`) || f.endsWith(".mdx"));
+    const matchedFile = files.find((file) => {
+      const filePath = path.join(POSTS_PATH, file);
+      const content = fs.readFileSync(filePath, "utf8");
+      const { data } = matter(content);
+      return data.slug === slug && (data.locale ? data.locale === locale : true);
+    });
+
+    if (!matchedFile) {
+      return null;
+    }
+    fullPath = path.join(POSTS_PATH, matchedFile);
   }
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
