@@ -4,8 +4,7 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
 import NumberInput from "@/components/NumberInput";
@@ -34,10 +33,15 @@ const mortgageSchema = z.object({
 
 type MortgageFormData = z.infer<typeof mortgageSchema>;
 
-export default function MortgageCalculatorPage() {
+interface MortgageClientProps {
+  faqs?: { question: string; answer: string }[];
+}
+
+export default function MortgageClient({ faqs }: MortgageClientProps) {
   const t = useTranslations();
   const locale = useLocale();
   const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
 
   const {
     register,
@@ -155,6 +159,49 @@ export default function MortgageCalculatorPage() {
             currencySymbol={currency}
           />
         )
+      }
+      contentSection={
+        <div className="space-y-8 text-black">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
+              {isPt ? "Metodologia e Formulação Matemática" : "Methodology & Mathematical Formulas"}
+            </h2>
+            <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
+              {isPt
+                ? "A Calculadora de Hipoteca do FinanceCalc Hub utiliza matemática de precisão decimal para projetar tabelas de amortização sem erros de arredondamento. O valor da parcela mensal é derivado da equação de anuidade:"
+                : "FinanceCalc Hub's Mortgage Calculator uses decimal-precision arithmetic to generate exact amortization schedules. The monthly payment is computed using the standard fixed-rate annuity equation:"}
+            </p>
+
+            <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
+              {"PMT = P * [i(1+i)^n] / [(1+i)^n - 1]"}
+            </div>
+
+            <p className="text-xs font-medium leading-relaxed text-neutral-700">
+              {isPt
+                ? "Onde PMT é o valor da parcela mensal, P é o saldo financiado (Preço do Imóvel - Entrada), i é a taxa de juros mensal (taxa anual dividida por 12) e n é o número total de meses (anos * 12)."
+                : "Where PMT represents monthly payment, P is principal balance (Home Price - Down Payment), i is monthly interest rate (annual rate / 12), and n is total duration in months (years * 12)."}
+            </p>
+          </div>
+
+          {faqs && faqs.length > 0 && (
+            <>
+              <hr className="border-[2px] border-black" />
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+                  {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
+                </h2>
+                <div className="space-y-4">
+                  {faqs.map((faq, idx) => (
+                    <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
+                      <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
+                      <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       }
       relatedTools={
         <RelatedTools tools={relatedToolsList} currentToolKey="mortgage" />
