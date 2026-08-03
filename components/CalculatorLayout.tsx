@@ -59,17 +59,19 @@ export default function CalculatorLayout({
 
         {/* CONTAINER DA CALCULADORA */}
         <section className="mx-auto max-w-6xl px-4 py-10 md:py-14">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* PAINEL DE INPUTS */}
-            <div className="lg:col-span-5 border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
-              <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
-                {t("common.inputs")}
-              </h2>
-              <div className="space-y-6">{children}</div>
+            <div className="lg:col-span-5 border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000] flex flex-col justify-between">
+              <div>
+                <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
+                  {t("common.inputs")}
+                </h2>
+                <div className="space-y-6">{children}</div>
+              </div>
             </div>
 
-            {/* PAINEL DE RESULTADOS */}
-            <div className="lg:col-span-7 space-y-8">
+            {/* PAINEL DE RESULTADOS E GRÁFICOS */}
+            <div className="lg:col-span-7 flex flex-col justify-between gap-8">
               <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
                 <h2 className="text-xl font-black uppercase mb-6 pb-2 border-b-[4px] border-black text-black">
                   {t("common.resultsSummary")}
@@ -77,9 +79,8 @@ export default function CalculatorLayout({
                 {resultSection}
               </div>
 
-              {/* GRÁFICOS */}
               {chartSection && (
-                <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000]">
+                <div className="border-[6px] border-black bg-white p-6 sm:p-8 shadow-[8px_8px_0_#000] flex-1">
                   {chartSection}
                 </div>
               )}

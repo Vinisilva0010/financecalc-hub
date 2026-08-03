@@ -104,36 +104,82 @@ export default async function Page({ params }: Props) {
   };
 
   const contentSection = (
-    <div className="space-y-8 text-black">
+    <div className="space-y-10 text-black">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-          {isPt ? "Estratégia de Eliminação de Dívidas" : "Debt Elimination Strategy"}
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 border-b-[3px] border-black pb-2">
+          {isPt ? "Estratégias de Eliminação de Dívidas" : "Debt Payoff Strategies & Frameworks"}
         </h2>
-        <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-          {isPt
-            ? "O cálculo projeta a velocidade de liquidação agregada aplicando o excedente orçamentário e redirecionando as parcelas quitadas para os saldos remanescentes:"
-            : "Projections evaluate total payoff timelines by rolling over freed-up cash flows into remaining balance accounts until liabilities reach zero:"}
-        </p>
 
-        <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-          {"Total Payoff Duration = Sum of Accelerated Amortization Months"}
+        <div className="space-y-4 text-sm sm:text-base font-medium leading-relaxed text-neutral-800">
+          <p>
+            {isPt
+              ? "Para eliminar passivos e empréstimos sem comprometer a saúde orçamentária, a engenharia financeira oferece duas metodologias principais de aceleração. Ambas utilizam o conceito de rollover de fluxo de caixa, em que o valor da parcela liberada de uma dívida quitada é incorporado diretamente ao pagamento da dívida seguinte."
+              : "Eliminating debts efficiently requires a systematic cash flow rollover mechanism. Once a liability is fully extinguished, its former monthly payment is automatically added to the repayment budget of the next target debt."}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "1. Método Avalanches (Juros Mais Altos Primeiro)" : "1. Debt Avalanche (Highest Interest First)"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Ataca prioritariamente as dívidas com as maiores taxas de juros nominais (APR). Matematicamente, é a estratégia mais eficiente, reduzindo o total pago em juros ao longo do tempo."
+                  : "Mathematically optimal approach focusing extra cash on debts with the highest Annual Percentage Rates (APR). Minimizes total interest expenses over the debt lifecycle."}
+              </p>
+            </div>
+
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "2. Método Bola de Neve (Menor Saldo Primeiro)" : "2. Debt Snowball (Lowest Balance First)"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Foca na eliminação rápida dos menores saldos devedores para gerar vitórias comportamentais e liberar fluxo de caixa mensal no menor tempo possível."
+                  : "Behavioral-driven approach prioritizing the smallest outstanding balances first to produce fast psychological wins and free up cash flow rapidly."}
+              </p>
+            </div>
+          </div>
+
+          <p>
+            {isPt
+              ? "O tempo de amortização mensal (n) de cada dívida sob taxa de juros composta é determinado por:"
+              : "The required payoff duration in months (n) for an individual debt subject to compound interest is calculated as:"}
+          </p>
+
+          <div className="border-[2px] border-black bg-white p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[4px_4px_0_#000]">
+            n = -ln(1 - (r × PV) / PMT) / ln(1 + r)
+          </div>
         </div>
       </div>
 
-      <hr className="border-[2px] border-black" />
-
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 border-b-[3px] border-black pb-2">
           {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-              <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-              <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+            <div key={idx} className="border-[3px] border-black p-5 bg-white shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-sm sm:text-base uppercase mb-3 text-black">
+                {faq.question}
+              </h3>
+              <p className="text-sm font-medium text-neutral-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-[4px] border-black bg-yellow-300 p-6 shadow-[4px_4px_0_#000]">
+        <h2 className="font-black uppercase text-lg mb-3">
+          {isPt ? "Custo de Oportunidade e Portabilidade de Crédito" : "Opportunity Cost & Credit Portability"}
+        </h2>
+        <p className="text-sm font-medium leading-relaxed">
+          {isPt
+            ? "Antes de destinar todos os recursos extras para a quitação, verifique a possibilidade de portabilidade de crédito para instituições financeiras que ofereçam taxas nominais menores. Reduzir a taxa de juros bruta reduz a velocidade de capitalização do saldo devedor imediatamente."
+            : "Before locking all available cash into debt reduction, explore debt consolidation or refinancing opportunities. Lowering your contract nominal interest rates reduces interest accrual speed immediately."}
+        </p>
       </div>
     </div>
   );

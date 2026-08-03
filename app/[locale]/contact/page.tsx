@@ -1,16 +1,73 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Footer from "@/components/Footer";
 import { Mail } from "lucide-react";
 
 const CONTACT_EMAIL = "zanvexistech@gmail.com";
 
-export default function ContactPage() {
-  const t = useTranslations("contact");
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  const isPt = locale === "pt";
+  const baseUrl = "https://financecalchub.zanvexis.com";
+  const path = "/contact";
+
+  const title = isPt ? "Contato | FinanceCalc Hub" : "Contact | FinanceCalc Hub";
+  const description = t("subtitle");
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/${locale}${path}`,
+      languages: { en: `${baseUrl}/en${path}`, pt: `${baseUrl}/pt${path}` },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/${locale}${path}`,
+      siteName: "FinanceCalc Hub",
+      locale: isPt ? "pt_BR" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
+export default async function ContactPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  const isPt = locale === "pt";
+  const baseUrl = "https://financecalchub.zanvexis.com";
+
+  const jsonLdContact = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": isPt ? "Contato | FinanceCalc Hub" : "Contact | FinanceCalc Hub",
+    "description": t("subtitle"),
+    "url": `${baseUrl}/${locale}/contact`,
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Zanvexis",
+      "url": "https://financecalchub.zanvexis.com",
+      "email": CONTACT_EMAIL,
+    },
+  };
 
   return (
     <main className="flex-1 bg-white flex flex-col justify-between min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdContact) }}
+      />
       <div>
         <section className="border-b-[6px] border-black bg-yellow-300 py-12 md:py-16">
           <div className="mx-auto max-w-4xl px-4">
@@ -36,7 +93,7 @@ export default function ContactPage() {
             </p>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="inline-flex items-center gap-2 border-[4px] border-black bg-black text-white px-6 py-3 text-sm font-black uppercase tracking-wider hover:bg-white hover:text-black transition-colors"
+              className="inline-flex items-center gap-2 border-[4px] border-black bg-black text-white px-6 py-3 text-sm font-black uppercase tracking-wider hover:bg-yellow-300 hover:text-black transition-colors"
             >
               <Mail className="w-4 h-4" />
               <span>{t("emailLabel")}: {CONTACT_EMAIL}</span>

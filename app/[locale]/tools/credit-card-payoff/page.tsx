@@ -104,36 +104,82 @@ export default async function Page({ params }: Props) {
   };
 
   const contentSection = (
-    <div className="space-y-8 text-black">
+    <div className="space-y-10 text-black">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-          {isPt ? "Estratégias de Quitação de Cartão de Crédito" : "Credit Card Payoff Methodology"}
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 border-b-[3px] border-black pb-2">
+          {isPt ? "Mecânica do Crédito Rotativo e Quitação de Cartões" : "Revolving Credit Mechanics & Card Payoff Optimization"}
         </h2>
-        <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-          {isPt
-            ? "A simulação executa projeções iterativas mensais aplicando os juros do rotativo sobre o saldo devedor remanescente e reordenando a amortização pela estratégia selecionada:"
-            : "The calculator models month-by-month compound amortization, computing revolving APR interest on remaining debt and prioritizing extra payments per the selected strategy:"}
-        </p>
 
-        <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-          {"Monthly Interest = Remaining Balance * (Annual Rate / 12)"}
+        <div className="space-y-4 text-sm sm:text-base font-medium leading-relaxed text-neutral-800">
+          <p>
+            {isPt
+              ? "As dívidas de cartão de crédito representam uma das formas mais onerosas de financiamento devido às taxas de juros do crédito rotativo. Entender como o saldo devedor acumula encargos mês a mês é essencial para estruturar um plano de quitação eficiente e evitar a bola de neve financeira."
+              : "Credit card balances are among the most expensive forms of consumer debt due to high revolving APRs. Understanding how interest compounds monthly is crucial for constructing an optimal payoff schedule and stopping debt accumulation."}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "1. A Armadilha do Pagamento Mínimo" : "1. The Minimum Payment Trap"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Pagar apenas o mínimo cobre quase exclusivamente os juros acumulados no período, amortizando uma fração ínfima do saldo principal e estendendo a dívida por anos."
+                  : "Paying only the minimum covers mostly accrued interest while making virtually no dent in the principal balance, extending debt for decades."}
+              </p>
+            </div>
+
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "2. Aporte Extra Direto no Principal" : "2. Direct Principal Amortization"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Qualquer valor somado além da parcela mínima reduz o principal diretamente, diminuindo a base de juros cobrada nos ciclos de faturamento seguintes."
+                  : "Every dollar added beyond the minimum directly reduces loan principal, shrinking the base interest charge for all subsequent billing cycles."}
+              </p>
+            </div>
+          </div>
+
+          <p>
+            {isPt
+              ? "A fórmula para calcular os juros cobrados em cada ciclo mensal do cartão é:"
+              : "The mathematical formula for monthly accrued interest charges on revolving credit is:"}
+          </p>
+
+          <div className="border-[2px] border-black bg-white p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[4px_4px_0_#000]">
+            JurosMensais = SaldoDevedor × ( TaxaAnual / 12 )
+          </div>
         </div>
       </div>
 
-      <hr className="border-[2px] border-black" />
-
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 border-b-[3px] border-black pb-2">
           {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-              <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-              <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+            <div key={idx} className="border-[3px] border-black p-5 bg-white shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-sm sm:text-base uppercase mb-3 text-black">
+                {faq.question}
+              </h3>
+              <p className="text-sm font-medium text-neutral-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-[4px] border-black bg-yellow-300 p-6 shadow-[4px_4px_0_#000]">
+        <h2 className="font-black uppercase text-lg mb-3">
+          {isPt ? "Consolidação e Troca de Dívida Cara por Barata" : "Debt Consolidation & Rate Refinancing"}
+        </h2>
+        <p className="text-sm font-medium leading-relaxed">
+          {isPt
+            ? "Se a taxa do cartão for excessivamente alta, avalie a troca da dívida por uma linha de crédito pessoal ou consignado com juros menores. A substituição do passivo reduz o custo financeiro total mantendo parcelas fixas no orçamento."
+            : "If card APRs are exorbitant, consider refinancing card balances into a lower-rate personal loan. Replacing high-interest revolving credit reduces total financial overhead and locks in fixed repayment terms."}
+        </p>
       </div>
     </div>
   );

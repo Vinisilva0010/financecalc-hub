@@ -42,14 +42,14 @@ export default async function Page({ params }: Props) {
   const faqs = isPt
     ? [
         {
-          question: "Como é calculado o valor da parcela fixa (EMI) do empréstimo?",
+          question: "Como é calculated o valor da parcela fixa (EMI) do empréstimo?",
           answer:
             "A prestação mensal é calculada utilizando a fórmula de amortização Price, garantindo valores iguais durante todo o contrato compostos por parcelas decrescentes de juros e crescentes de amortização.",
         },
         {
           question: "Qual a diferença entre taxa de juros nominal e Custo Efetivo Total (CET)?",
           answer:
-            "A taxa nominal indica apenas o juro do dinheiro empréstimo. O CET encampa todos os encargos do contrato, como IOF, taxas de abertura de crédito e seguros, refletindo o custo real pago.",
+            "A taxa nominal indica apenas o juro do dinheiro emprestado. O CET engloba todos os encargos do contrato, como IOF, taxas de abertura de crédito e seguros, refletindo o custo real pago.",
         },
         {
           question: "Como a amortização antecipada reduz o custo total do empréstimo?",
@@ -104,36 +104,82 @@ export default async function Page({ params }: Props) {
   };
 
   const contentSection = (
-    <div className="space-y-8 text-black">
+    <div className="space-y-10 text-black">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-          {isPt ? "Metodologia de Empréstimo Pessoal e Tabela Price" : "Personal Loan EMI Methodology"}
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 border-b-[3px] border-black pb-2">
+          {isPt ? "Metodologia de Amortização de Empréstimos e Tabela Price" : "Personal Loan Amortization & EMI Framework"}
         </h2>
-        <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-          {isPt
-            ? "A simulação determina as prestações mensais fixas e o cronograma de juros aplicando a equação clássica de anuidade de amortização francesa:"
-            : "Monthly installments and payment breakdown calculations use standard French amortization annuity pricing formulas:"}
-        </p>
 
-        <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-          {"EMI = P * [r(1+r)^n] / [(1+r)^n - 1]"}
+        <div className="space-y-4 text-sm sm:text-base font-medium leading-relaxed text-neutral-800">
+          <p>
+            {isPt
+              ? "A precificação de empréstimos pessoais utiliza predominantemente o Sistema Francês de Amortização (Tabela Price), caracterizado por parcelas mensais constantes (EMI - Equated Monthly Installment). Em cada prestação, a proporção de juros e principal varia ao longo do contrato: os primeiros meses pagam uma proporção maior de juros, enquanto a amortização do saldo principal acelera próximo ao final do prazo."
+              : "Personal loan structures predominantly rely on French Amortization (Price System), generating fixed monthly installments (EMI). Inside each equal installment, the breakdown between interest charges and principal reduction evolves over time: early payments consist heavily of interest, whereas later payments aggressively reduce principal balance."}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "1. Taxa Nominal vs. CET / APR" : "1. Nominal Rate vs. APR / Total Cost"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "A taxa de juros nominal reflete apenas o custo do capital. O Custo Efetivo Total (CET / APR) engloba impostos (IOF), tarifas bancárias, abertura de crédito e seguros."
+                  : "The nominal rate covers basic borrowing fees. Annual Percentage Rate (APR) or CET includes taxes (IOF), origination charges, and mandatory insurance premiums."}
+              </p>
+            </div>
+
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "2. Desconto por Amortização Antecipada" : "2. Prepayment Interest Deductions"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Amortizações extraordinárias aplicadas diretamente no saldo devedor cancelam a incidência de juros compostos futuros das parcelas finais do contrato."
+                  : "Extra principal payments reduce remaining loan principal, eliminating future unearned interest charges on remaining installments."}
+              </p>
+            </div>
+          </div>
+
+          <p>
+            {isPt
+              ? "A fórmula matemática para calcular o valor exato da Parcela Mensal (EMI) é dada por:"
+              : "The mathematical annuity equation used to solve for monthly EMI is formulated as:"}
+          </p>
+
+          <div className="border-[2px] border-black bg-white p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[4px_4px_0_#000]">
+            EMI = P × [ r(1 + r)^n ] / [ (1 + r)^n - 1 ]
+          </div>
         </div>
       </div>
 
-      <hr className="border-[2px] border-black" />
-
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 border-b-[3px] border-black pb-2">
           {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-              <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-              <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+            <div key={idx} className="border-[3px] border-black p-5 bg-white shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-sm sm:text-base uppercase mb-3 text-black">
+                {faq.question}
+              </h3>
+              <p className="text-sm font-medium text-neutral-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-[4px] border-black bg-yellow-300 p-6 shadow-[4px_4px_0_#000]">
+        <h2 className="font-black uppercase text-lg mb-3">
+          {isPt ? "Avaliando Propostas de Financiamento" : "Evaluating Personal Loan Offers"}
+        </h2>
+        <p className="text-sm font-medium leading-relaxed">
+          {isPt
+            ? "Nunca compare propostas de empréstimo considerando apenas a taxa de juros mensal anunciada. Exija a planilha com o CET anualizado completo e certifique-se de que o prazo de pagamento escolhido não comprometa mais de 15% da sua renda líquida mensal."
+            : "Never evaluate personal loans based purely on advertised monthly interest rates. Review full annualized APR disclosure schedules and verify that monthly installments do not exceed 15% of net disposable income."}
+        </p>
       </div>
     </div>
   );

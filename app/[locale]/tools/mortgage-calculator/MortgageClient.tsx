@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,37 +11,39 @@ import NumberInput from "@/components/NumberInput";
 import PercentInput from "@/components/PercentInput";
 import ResultCard from "@/components/ResultCard";
 import ChartWrapper from "@/components/ChartWrapper";
-import AmortizationTable from "@/components/AmortizationTable";
 import Disclaimer from "@/components/Disclaimer";
 import RelatedTools from "@/components/RelatedTools";
 import { calculateMortgage } from "@/lib/calculators/mortgage";
-import { DollarSign, TrendingUp, Calendar, Home } from "lucide-react";
+import { Home, Percent, Calendar, DollarSign } from "lucide-react";
 
 const relatedToolsList = [
-  { key: "personalLoan", href: "/tools/personal-loan-calculator" },
-  { key: "creditCard", href: "/tools/credit-card-payoff" },
-  { key: "compoundInterest", href: "/tools/compound-interest" },
   { key: "affordability", href: "/tools/affordability" },
+  { key: "compoundInterest", href: "/tools/compound-interest" },
+  { key: "debtPayoff", href: "/tools/debt-payoff" },
 ];
 
 const mortgageSchema = z.object({
   homePrice: z.number().min(1, "Home price must be greater than 0"),
   downPayment: z.number().min(0, "Down payment cannot be negative"),
   interestRate: z.number().min(0).max(100, "Interest rate must be between 0 and 100"),
-  loanTermYears: z.number().min(1).max(50, "Loan term must be between 1 and 50 years"),
+  loanTerm: z.number().min(1).max(50, "Loan term must be between 1 and 50 years"),
+}).refine((data) => data.downPayment < data.homePrice, {
+  message: "Down payment must be less than home price",
+  path: ["downPayment"],
 });
 
 type MortgageFormData = z.infer<typeof mortgageSchema>;
 
-interface MortgageClientProps {
-  faqs?: { question: string; answer: string }[];
+interface Props {
+  contentSection?: ReactNode;
 }
 
-export default function MortgageClient({ faqs }: MortgageClientProps) {
+export default function MortgageClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
-  const currency = locale === "pt" ? "R$" : "$";
   const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
+  const [showAllSchedule, setShowAllSchedule] = useState(false);
 
   const {
     register,
@@ -53,30 +55,41 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
       homePrice: 300000,
       downPayment: 60000,
       interestRate: 6.5,
-      loanTermYears: 30,
+      loanTerm: 30,
     },
   });
 
-  const homePrice = watch("homePrice");
-  const downPayment = watch("downPayment");
-  const interestRate = watch("interestRate");
-  const loanTermYears = watch("loanTermYears");
+  const homePrice = watch("homePrice") || 0;
+  const downPayment = watch("downPayment") || 0;
+  const interestRate = watch("interestRate") || 0;
+  const loanTerm = watch("loanTerm") || 1;
 
   const result = useMemo(() => {
     try {
-      return calculateMortgage({
+      if (homePrice <= downPayment) return null;
+
+      const calc = calculateMortgage({
         homePrice,
         downPayment,
         interestRate,
-        loanTermYears,
+        loanTermYears: loanTerm,
       });
+
+      return {
+        loanAmount: calc.loanAmount.toNumber(),
+        monthlyPayment: calc.monthlyPayment.toNumber(),
+        totalInterest: calc.totalInterest.toNumber(),
+        totalCost: calc.totalCost.toNumber(),
+        numberOfPayments: calc.numberOfPayments,
+        amortizationSchedule: calc.amortizationSchedule,
+      };
     } catch {
       return null;
     }
-  }, [homePrice, downPayment, interestRate, loanTermYears]);
+  }, [homePrice, downPayment, interestRate, loanTerm]);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -84,132 +97,119 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
   };
 
   const chartData = useMemo(() => {
-    if (!result) return [];
-    const schedule = result.amortizationSchedule;
-    const yearlyData = [];
-    for (let year = 1; year <= loanTermYears; year++) {
-      const startIdx = (year - 1) * 12;
-      const endIdx = Math.min(year * 12, schedule.length);
-      const yearPayments = schedule.slice(startIdx, endIdx);
-      const principal = yearPayments.reduce((sum, p) => sum + p.principal, 0);
-      const interest = yearPayments.reduce((sum, p) => sum + p.interest, 0);
-      yearlyData.push({
-        year: isPt ? `Ano ${year}` : `Year ${year}`,
-        principal: Math.round(principal),
-        interest: Math.round(interest),
-      });
-    }
-    return yearlyData;
-  }, [result, loanTermYears, isPt]);
+    if (!result || !result.amortizationSchedule) return [];
+    
+    return result.amortizationSchedule
+      .filter((d) => d.paymentNumber === 1 || d.paymentNumber % 12 === 0)
+      .map((d) => ({
+        year: isPt ? `Ano ${Math.ceil(d.paymentNumber / 12)}` : `Year ${Math.ceil(d.paymentNumber / 12)}`,
+        balance: Math.round(d.balance),
+        paidPrincipal: Math.round(result.loanAmount - d.balance),
+      }));
+  }, [result, isPt]);
+
+  const visibleSchedule = useMemo(() => {
+    if (!result || !result.amortizationSchedule) return [];
+    return showAllSchedule ? result.amortizationSchedule : result.amortizationSchedule.slice(0, 12);
+  }, [result, showAllSchedule]);
 
   return (
     <CalculatorLayout
       titleKey="tools.mortgage"
       descriptionKey="tools.mortgageDesc"
+      disclaimer={<></>}
       resultSection={
-        result && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-black uppercase tracking-tight text-black">
-              {t("common.result")}
-            </h2>
-            <ResultCard
-              label={t("common.monthlyPayment")}
-              value={`${currency}${formatCurrency(result.monthlyPayment.toNumber())}`}
-              highlight
-              icon={<DollarSign className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("common.loanAmount")}
-              value={`${currency}${formatCurrency(result.loanAmount.toNumber())}`}
-              icon={<Home className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("common.totalInterest")}
-              value={`${currency}${formatCurrency(result.totalInterest.toNumber())}`}
-              icon={<TrendingUp className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("common.totalCost")}
-              value={`${currency}${formatCurrency(result.totalCost.toNumber())}`}
-              icon={<Calendar className="h-5 w-5" />}
-              subtext={`${result.numberOfPayments} ${t("common.months")}`}
-            />
-          </div>
-        )
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <ResultCard
+            label={isPt ? "Parcela Mensal" : "Monthly Payment"}
+            value={`${currency}${formatCurrency(result ? result.monthlyPayment : 0)}`}
+            highlight
+            icon={<DollarSign className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Valor do Empréstimo" : "Loan Amount"}
+            value={`${currency}${formatCurrency(result ? result.loanAmount : 0)}`}
+            icon={<Home className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Total de Juros" : "Total Interest"}
+            value={`${currency}${formatCurrency(result ? result.totalInterest : 0)}`}
+            icon={<Percent className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Custo Total (Empréstimo + Juros)" : "Total Cost (Loan + Interest)"}
+            value={`${currency}${formatCurrency(result ? result.totalCost : 0)}`}
+            icon={<Calendar className="h-5 w-5" />}
+          />
+        </div>
       }
       chartSection={
-        result && (
+        result && chartData.length > 0 ? (
           <ChartWrapper
-            type="bar"
+            type="line"
             data={chartData}
             xKey="year"
             yKeys={[
-              { key: "principal", label: isPt ? "Amortização Principal" : "Principal", color: "#000000" },
-              { key: "interest", label: isPt ? "Juros" : "Interest", color: "#facc15" },
+              { key: "balance", label: isPt ? "Saldo Devedor" : "Remaining Balance", color: "#000000" },
+              { key: "paidPrincipal", label: isPt ? "Amortização Acumulada" : "Principal Paid", color: "#facc15" }
             ]}
-            title={isPt ? "Amortização de Principal vs Juros por Ano" : "Principal vs Interest by Year"}
-            height={280}
+            title={isPt ? "PROJEÇÃO DE AMORTIZAÇÃO" : "AMORTIZATION PROJECTION"}
+            height={300}
           />
-        )
+        ) : undefined
       }
       amortizationSection={
-        result && (
-          <AmortizationTable
-            data={result.amortizationSchedule}
-            currencySymbol={currency}
-          />
-        )
-      }
-      contentSection={
-        <div className="space-y-8 text-black">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-              {isPt ? "Metodologia e Formulação Matemática" : "Methodology & Mathematical Formulas"}
-            </h2>
-            <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-              {isPt
-                ? "A Calculadora de Hipoteca do FinanceCalc Hub utiliza matemática de precisão decimal para projetar tabelas de amortização sem erros de arredondamento. O valor da parcela mensal é derivado da equação de anuidade:"
-                : "FinanceCalc Hub's Mortgage Calculator uses decimal-precision arithmetic to generate exact amortization schedules. The monthly payment is computed using the standard fixed-rate annuity equation:"}
-            </p>
+        result && visibleSchedule.length > 0 ? (
+          <div className="space-y-4">
+            <h3 className="text-xl font-black uppercase text-black border-b-[3px] border-black pb-2">
+              {isPt ? "TABELA DE AMORTIZAÇÃO" : "AMORTIZATION SCHEDULE"}
+            </h3>
 
-            <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-              {"PMT = P * [i(1+i)^n] / [(1+i)^n - 1]"}
+            <div className="overflow-x-auto border-[4px] border-black shadow-[4px_4px_0_#000]">
+              <table className="w-full text-left font-mono text-xs sm:text-sm border-collapse bg-white">
+                <thead>
+                  <tr className="bg-yellow-400 border-b-[3px] border-black text-black uppercase font-black">
+                    <th className="p-3 border-r-[2px] border-black text-center">#</th>
+                    <th className="p-3 border-r-[2px] border-black">{isPt ? "PARCELA" : "PAYMENT"} ({currency})</th>
+                    <th className="p-3 border-r-[2px] border-black">{isPt ? "PRINCIPAL" : "PRINCIPAL"}</th>
+                    <th className="p-3 border-r-[2px] border-black">{isPt ? "JUROS" : "INTEREST"}</th>
+                    <th className="p-3">{isPt ? "SALDO" : "BALANCE"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleSchedule.map((row) => (
+                    <tr key={row.paymentNumber} className="border-b-[1px] border-black hover:bg-neutral-100 font-bold">
+                      <td className="p-3 border-r-[2px] border-black text-center bg-neutral-50">{row.paymentNumber}</td>
+                      <td className="p-3 border-r-[2px] border-black">{formatCurrency(row.payment)}</td>
+                      <td className="p-3 border-r-[2px] border-black text-black">{formatCurrency(row.principal)}</td>
+                      <td className="p-3 border-r-[2px] border-black text-red-600">{formatCurrency(row.interest)}</td>
+                      <td className="p-3 font-black">{formatCurrency(row.balance)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
 
-            <p className="text-xs font-medium leading-relaxed text-neutral-700">
-              {isPt
-                ? "Onde PMT é o valor da parcela mensal, P é o saldo financiado (Preço do Imóvel - Entrada), i é a taxa de juros mensal (taxa anual dividida por 12) e n é o número total de meses (anos * 12)."
-                : "Where PMT represents monthly payment, P is principal balance (Home Price - Down Payment), i is monthly interest rate (annual rate / 12), and n is total duration in months (years * 12)."}
-            </p>
+            {result.amortizationSchedule.length > 12 && (
+              <button
+                type="button"
+                onClick={() => setShowAllSchedule(!showAllSchedule)}
+                className="w-full py-3 bg-black text-white font-black text-xs sm:text-sm uppercase tracking-wider border-[3px] border-black shadow-[4px_4px_0_#000] hover:bg-yellow-400 hover:text-black transition-colors"
+              >
+                {showAllSchedule
+                  ? (isPt ? "MOSTRAR APENAS PRIMEIROS 12 MESES" : "SHOW FIRST 12 MONTHS ONLY")
+                  : (isPt ? `MOSTRAR TODOS OS ${result.numberOfPayments} MESES` : `SHOW ALL ${result.numberOfPayments} MONTHS`)}
+              </button>
+            )}
           </div>
-
-          {faqs && faqs.length > 0 && (
-            <>
-              <hr className="border-[2px] border-black" />
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
-                  {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
-                </h2>
-                <div className="space-y-4">
-                  {faqs.map((faq, idx) => (
-                    <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-                      <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-                      <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-        </div>
+        ) : undefined
       }
-      relatedTools={
-        <RelatedTools tools={relatedToolsList} currentToolKey="mortgage" />
-      }
+      contentSection={contentSection}
+      relatedTools={<RelatedTools tools={relatedToolsList} currentToolKey="mortgage" />}
     >
       <div className="space-y-6">
         <CurrencyInput
-          label={isPt ? "Preço do Imóvel" : "Home Price"}
+          label={isPt ? "Valor do Imóvel" : "Home Price"}
           error={errors.homePrice?.message}
           {...register("homePrice", { valueAsNumber: true })}
         />
@@ -219,19 +219,18 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
           {...register("downPayment", { valueAsNumber: true })}
         />
         <PercentInput
-          label={isPt ? "Taxa de Juros Anual (%)" : "Interest Rate (%)"}
+          label={isPt ? "Taxa de Juros Anual (%)" : "Annual Interest Rate (%)"}
           error={errors.interestRate?.message}
           {...register("interestRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label={isPt ? "Prazo do Financiamento (Anos)" : "Loan Term (Years)"}
-          error={errors.loanTermYears?.message}
-          {...register("loanTermYears", { valueAsNumber: true })}
+          label={isPt ? "Prazo (Anos)" : "Loan Term (Years)"}
+          error={errors.loanTerm?.message}
+          {...register("loanTerm", { valueAsNumber: true })}
         />
-      </div>
-
-      <div className="mt-8">
-        <Disclaimer />
+        <div className="pt-4">
+          <Disclaimer />
+        </div>
       </div>
     </CalculatorLayout>
   );

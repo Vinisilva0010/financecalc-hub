@@ -1,20 +1,71 @@
-"use client";
-
-import { useTranslations } from "next-intl";
+import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Footer from "@/components/Footer";
 import { Lock } from "lucide-react";
 
-export default function PrivacyPolicyPage() {
-  const t = useTranslations("privacy");
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "privacy" });
+  const isPt = locale === "pt";
+  const baseUrl = "https://financecalchub.zanvexis.com";
+  const path = "/privacy";
+
+  const title = isPt ? "Política de Privacidade | FinanceCalc Hub" : "Privacy Policy | FinanceCalc Hub";
+  const description = t("subtitle");
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/${locale}${path}`,
+      languages: { en: `${baseUrl}/en${path}`, pt: `${baseUrl}/pt${path}` },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/${locale}${path}`,
+      siteName: "FinanceCalc Hub",
+      locale: isPt ? "pt_BR" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
+
+export default async function PrivacyPolicyPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "privacy" });
+  const isPt = locale === "pt";
+  const baseUrl = "https://financecalchub.zanvexis.com";
+
+  const jsonLdPrivacy = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": isPt ? "Política de Privacidade | FinanceCalc Hub" : "Privacy Policy | FinanceCalc Hub",
+    "description": t("subtitle"),
+    "url": `${baseUrl}/${locale}/privacy`,
+  };
 
   return (
     <main className="flex-1 bg-white flex flex-col justify-between min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPrivacy) }}
+      />
       <div>
         <section className="border-b-[6px] border-black bg-yellow-300 py-12 md:py-16">
           <div className="mx-auto max-w-4xl px-4">
             <div className="inline-flex items-center gap-2 border-[4px] border-black bg-white px-3 py-1 text-xs font-black uppercase mb-4">
               <Lock className="w-4 h-4 text-black" />
-              <span>Data Protection</span>
+              <span>{t("badge")}</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-black mb-4">
               {t("title")}

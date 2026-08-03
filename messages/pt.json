@@ -199,14 +199,16 @@
     "authorTitle": "Engenharia e Rigor Matemático",
     "authorDesc": "Desenvolvido e mantido por Vinicius Pontual, engenheiro de software focado em algoritmos financeiros de alta performance. Todas as fórmulas são validadas contra tabelas padrão de amortização (SAC, Price e Juros Compostos).",
     "transparencyTitle": "Monetização e Transparência com Anúncios",
-    "transparencyDesc": "O FinanceCalc Hub é 100% gratuito. Para manter a infraestrutura sem cobrar nada e sem coletar dados pessoais, exibimos anúncios de terceiros (como Google AdSense). Os anúncios não influenciam os resultados nem as fórmulas."
+    "transparencyDesc": "O FinanceCalc Hub é 100% gratuito. Para manter a infraestrutura sem cobrar nada e sem coletar dados pessoais, exibimos anúncios de terceiros (como Google AdSense). Os anúncios não influenciam os resultados nem as fórmulas.",
+    "tddBadge": "Testado via TDD & Matemática de Precisão Arbitrária"
   },
   "disclaimer": {
     "title": "Isenção de Responsabilidade Financeira",
     "subtitle": "Informações legais importantes sobre as estimativas das ferramentas.",
     "content1": "As calculadoras, ferramentas e conteúdos do FinanceCalc Hub destinam-se exclusivamente a fins educativos e informativos. Não constituem aconselhamento financeiro, jurídico, de investimentos ou tributário.",
     "content2": "Todos os resultados são estimativas matemáticas baseadas nos dados inseridos pelo usuário. Termos reais de empréstimos, taxas de juros, parcelas e rendimentos variam de acordo com instituições financeiras, score de crédito e impostos.",
-    "content3": "Sempre consulte um planejador financeiro certificado, contador ou especialista de crédito antes de assinar contratos ou fechar compromissos financeiros."
+    "content3": "Sempre consulte um planejador financeiro certificado, contador ou especialista de crédito antes de assinar contratos ou fechar compromissos financeiros.",
+    "badge": "Aviso Legal"
   },
   "privacy": {
     "title": "Política de Privacidade",
@@ -216,7 +218,8 @@
     "section2Title": "2. Cookies e Anúncios de Terceiros",
     "section2Desc": "Usamos provedores de anúncios de terceiros (como Google AdSense) para manter o site gratuito. Esses parceiros podem usar cookies para exibir anúncios com base nas suas visitas. Você pode gerenciar suas preferências nas configurações de anúncios do Google.",
     "section3Title": "3. Análise de Tráfego",
-    "section3Desc": "Coletamos dados anônimos e agregados de tráfego (como páginas vistas e tipo de navegador) para melhorar a usabilidade. Nenhuma informação pessoal identificável é rastreada ou vendida."
+    "section3Desc": "Coletamos dados anônimos e agregados de tráfego (como páginas vistas e tipo de navegador) para melhorar a usabilidade. Nenhuma informação pessoal identificável é rastreada ou vendida.",
+    "badge": "Proteção de Dados"
   },
   "terms": {
     "title": "Termos de Serviço",
@@ -226,7 +229,8 @@
     "section2Title": "2. Ausência de Garantias Comerciais",
     "section2Desc": "Todas as ferramentas são fornecidas NO ESTADO EM QUE SE ENCONTRAM. Embora busquemos 100% de precisão matemática com bibliotecas de precisão arbitrária, não nos responsabilizamos por decisões tomadas com base nas estimativas.",
     "section3Title": "3. Modificações",
-    "section3Desc": "Reservamo-nos o direito de atualizar modelos de cálculo, recursos do site ou termos de serviço a qualquer momento sem aviso prévio."
+    "section3Desc": "Reservamo-nos o direito de atualizar modelos de cálculo, recursos do site ou termos de serviço a qualquer momento sem aviso prévio.",
+    "badge": "Acordo de Uso"
   },
   "contact": {
     "title": "Contato",

@@ -104,36 +104,88 @@ export default async function Page({ params }: Props) {
   };
 
   const contentSection = (
-    <div className="space-y-8 text-black">
+    <div className="space-y-10 text-black">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-          {isPt ? "Metodologia e Formulação Matemática" : "Methodology & Mathematical Formulas"}
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 border-b-[3px] border-black pb-2">
+          {isPt ? "Mecânica dos Juros Compostos e Aportes Recorrentes" : "Mechanics of Compound Interest & Recurring Deposits"}
         </h2>
-        <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-          {isPt
-            ? "A Calculadora de Juros Compostos do FinanceCalc Hub calcula rendimentos usando aritmética de precisão decimal para evitar inconsistências de arredondamento. A equação integra o aporte inicial acumulado com os aportes periódicos:"
-            : "FinanceCalc Hub's Compound Interest Calculator uses decimal-precision floating calculations to ensure exact growth numbers without roundoff drift. The total is calculated combining initial balance with periodic investments:"}
-        </p>
 
-        <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-          {"A = P(1 + r/n)^(nt) + PMT * [((1 + r/n)^(nt) - 1) / (r/n)]"}
+        <div className="space-y-4 text-sm sm:text-base font-medium leading-relaxed text-neutral-800">
+          <p>
+            {isPt
+              ? "Diferente dos juros simples — em que a rentabilidade incide apenas sobre o capital inicial —, os juros compostos multiplicam o patrimônio recalculando os rendimentos sobre o montante acumulado mais os aportes mensais realizados ao longo do tempo."
+              : "Unlike simple interest — where yield applies strictly to the initial deposit —, compound interest multiplies capital by evaluating returns on accumulated earnings plus ongoing periodic deposits."}
+          </p>
+
+          <p>
+            {isPt
+              ? "O modelo matemático aplicado pelo FinanceCalc Hub divide o cálculo do saldo acumulado final em duas estruturas financeiras essenciais:"
+              : "The mathematical model applied by FinanceCalc Hub breaks the total future value into two core financial components:"}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "1. Valor Futuro do Principal (Aporte Inicial)" : "1. Future Value of Initial Principal"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Modela o crescimento isolado do valor depositado no dia zero submetido à taxa de juros durante todo o horizonte de tempo."
+                  : "Models the standalone exponential growth of the day-zero principal subject to compound rates across the investment duration."}
+              </p>
+            </div>
+
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "2. Valor Futuro de uma Anuidade Ordinária" : "2. Future Value of an Ordinary Annuity"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Modela o efeito acumulado de cada aporte recorrente, calculando a rentabilidade individual de cada depósito feito mês a mês."
+                  : "Models the compounding effect of monthly deposits, calculating individual returns for every installment added month over month."}
+              </p>
+            </div>
+          </div>
+
+          <p>
+            {isPt
+              ? "A equação matemática consolidada para o cálculo do Montante (A) é dada por:"
+              : "The consolidated mathematical formula for Total Accumulated Wealth (A) is defined as:"}
+          </p>
+
+          <div className="border-[2px] border-black bg-white p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[4px_4px_0_#000]">
+            A = P × (1 + r/n)^(n×t) + PMT × [ ((1 + r/n)^(n×t) - 1) / (r/n) ]
+          </div>
         </div>
       </div>
 
-      <hr className="border-[2px] border-black" />
-
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 border-b-[3px] border-black pb-2">
           {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-              <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-              <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+            <div key={idx} className="border-[3px] border-black p-5 bg-white shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-sm sm:text-base uppercase mb-3 text-black">
+                {faq.question}
+              </h3>
+              <p className="text-sm font-medium text-neutral-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-[4px] border-black bg-yellow-300 p-6 shadow-[4px_4px_0_#000]">
+        <h2 className="font-black uppercase text-lg mb-3">
+          {isPt ? "Taxa Nominal vs. Taxa Real (Efeito Inflacionário)" : "Nominal Yield vs. Real Yield (Inflation Effect)"}
+        </h2>
+        <p className="text-sm font-medium leading-relaxed">
+          {isPt
+            ? "Lembre-se que simulações de longo prazo devem levar em consideração o impacto da inflação (IPCA). Para obter o ganho real de poder de compra, desconte a taxa de inflação estimada da taxa de juros anual bruta informada nos campos da calculadora."
+            : "Long-term projections must consider inflation rates. To calculate real purchasing power gain, subtract expected inflation from the gross annual return rate inputted into the calculator limits."}
+        </p>
       </div>
     </div>
   );

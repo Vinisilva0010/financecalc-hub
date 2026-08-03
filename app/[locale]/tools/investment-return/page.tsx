@@ -104,36 +104,82 @@ export default async function Page({ params }: Props) {
   };
 
   const contentSection = (
-    <div className="space-y-8 text-black">
+    <div className="space-y-10 text-black">
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-3">
-          {isPt ? "Métrica de Retorno e CAGR" : "Investment Return Metrics & CAGR"}
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 border-b-[3px] border-black pb-2">
+          {isPt ? "Métricas de Retorno de Investimento e CAGR" : "Investment Performance & CAGR Methodology"}
         </h2>
-        <p className="text-xs sm:text-sm font-medium leading-relaxed mb-4">
-          {isPt
-            ? "O cálculo aplica a média geométrica de retorno composto para derivar a taxa anualizada constante sobre o capital inicial investido:"
-            : "The calculation uses geometric mean compounding formulas to derive annualized yield percentages from initial and final capital values:"}
-        </p>
 
-        <div className="border-[2px] border-black bg-white p-3 sm:p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[2px_2px_0_#000]">
-          {"CAGR = (Final Value / Initial Investment)^(1 / Years) - 1"}
+        <div className="space-y-4 text-sm sm:text-base font-medium leading-relaxed text-neutral-800">
+          <p>
+            {isPt
+              ? "Para comparar a eficiência real entre diferentes opções de investimento, calcular apenas o lucro bruto simples é insuficiente. O mercado financeiro profissional utiliza o CAGR (Taxa de Crescimento Anual Composta), uma média geométrica que determina a taxa de crescimento anual constante necessária para que um capital inicial atinja o valor final no horizonte de tempo considerado."
+              : "Evaluating portfolio performance accurately requires moving beyond total percentage gain. Financial analysts rely on CAGR (Compound Annual Growth Rate) — a geometric mean return rate that calculates the smoothed annual growth required for an investment to grow from starting balance to ending balance."}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "1. Retorno Absoluto Cumulativo" : "1. Total Cumulative Return"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Mede a variação percentual total da carteira sem levar em consideração o tempo necessário para obter esse resultado."
+                  : "Measures total percentage expansion from initial capital to ending valuation without adjusting for duration elapsed."}
+              </p>
+            </div>
+
+            <div className="border-[2px] border-black bg-white p-4 shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-base uppercase mb-2">
+                {isPt ? "2. Média Geométrica (CAGR)" : "2. Annualized Geometric Return (CAGR)"}
+              </h3>
+              <p className="text-xs sm:text-sm font-medium leading-relaxed">
+                {isPt
+                  ? "Neutraliza a volatilidade e variações anuais intermediárias, oferecendo uma taxa anualizada comparável diretamente a benchmarks."
+                  : "Eliminates annual fluctuation noise, providing a standardized rate that can be benchmarked directly against market indices."}
+              </p>
+            </div>
+          </div>
+
+          <p>
+            {isPt
+              ? "A fórmula matemática clássica para a determinação do CAGR é dada por:"
+              : "The mathematical expression used to solve for CAGR is defined as:"}
+          </p>
+
+          <div className="border-[2px] border-black bg-white p-4 font-mono text-xs sm:text-sm my-4 overflow-x-auto text-center font-bold shadow-[4px_4px_0_#000]">
+            CAGR = ( ValorFinal / ValorInicial )^( 1 / Anos ) - 1
+          </div>
         </div>
       </div>
 
-      <hr className="border-[2px] border-black" />
-
       <div>
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 border-b-[3px] border-black pb-2">
           {isPt ? "Perguntas Frequentes (FAQ)" : "Frequently Asked Questions"}
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="border-[2px] border-black p-4 bg-white shadow-[2px_2px_0_#000]">
-              <h3 className="font-black text-xs sm:text-sm uppercase mb-2">{faq.question}</h3>
-              <p className="text-xs font-medium text-neutral-700 leading-relaxed">{faq.answer}</p>
+            <div key={idx} className="border-[3px] border-black p-5 bg-white shadow-[4px_4px_0_#000]">
+              <h3 className="font-black text-sm sm:text-base uppercase mb-3 text-black">
+                {faq.question}
+              </h3>
+              <p className="text-sm font-medium text-neutral-700 leading-relaxed">
+                {faq.answer}
+              </p>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-[4px] border-black bg-yellow-300 p-6 shadow-[4px_4px_0_#000]">
+        <h2 className="font-black uppercase text-lg mb-3">
+          {isPt ? "Limitações da Métrica CAGR" : "CAGR Analytical Limitations"}
+        </h2>
+        <p className="text-sm font-medium leading-relaxed">
+          {isPt
+            ? "O CAGR assume um crescimento linear constante e não reflete a volatilidade sofrida pelo ativo ao longo do período. Além disso, para cenários com múltiplos aportes e retiradas em datas distintas, recomenda-se utilizar a Taxa Interna de Retorno Ponderada pelo Tempo (XIRR/TIR)."
+            : "CAGR assumes smooth, constant annualized growth and ignores underlying volatility spikes. For portfolios with frequent cash inflows or outflows, Time-Weighted or Dollar-Weighted Internal Rate of Return (IRR / XIRR) should be utilized."}
+        </p>
       </div>
     </div>
   );
