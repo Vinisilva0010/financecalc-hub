@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/"],
+      disallow: ["/api/"],
     },
-    sitemap: "https://financecalchub.com/sitemap.xml",
+    sitemap: "https://financecalchub.zanvexis.com/sitemap.xml",
   };
 }
