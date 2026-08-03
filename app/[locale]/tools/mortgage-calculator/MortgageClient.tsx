@@ -94,13 +94,13 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
       const principal = yearPayments.reduce((sum, p) => sum + p.principal, 0);
       const interest = yearPayments.reduce((sum, p) => sum + p.interest, 0);
       yearlyData.push({
-        year: `Year ${year}`,
+        year: isPt ? `Ano ${year}` : `Year ${year}`,
         principal: Math.round(principal),
         interest: Math.round(interest),
       });
     }
     return yearlyData;
-  }, [result, loanTermYears]);
+  }, [result, loanTermYears, isPt]);
 
   return (
     <CalculatorLayout
@@ -144,10 +144,10 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
             data={chartData}
             xKey="year"
             yKeys={[
-              { key: "principal", label: "Principal", color: "#000000" },
-              { key: "interest", label: "Interest", color: "#facc15" },
+              { key: "principal", label: isPt ? "Amortização Principal" : "Principal", color: "#000000" },
+              { key: "interest", label: isPt ? "Juros" : "Interest", color: "#facc15" },
             ]}
-            title="Principal vs Interest by Year"
+            title={isPt ? "Amortização de Principal vs Juros por Ano" : "Principal vs Interest by Year"}
             height={280}
           />
         )
@@ -209,22 +209,22 @@ export default function MortgageClient({ faqs }: MortgageClientProps) {
     >
       <div className="space-y-6">
         <CurrencyInput
-          label="Home Price"
+          label={isPt ? "Preço do Imóvel" : "Home Price"}
           error={errors.homePrice?.message}
           {...register("homePrice", { valueAsNumber: true })}
         />
         <CurrencyInput
-          label="Down Payment"
+          label={isPt ? "Valor da Entrada" : "Down Payment"}
           error={errors.downPayment?.message}
           {...register("downPayment", { valueAsNumber: true })}
         />
         <PercentInput
-          label="Interest Rate"
+          label={isPt ? "Taxa de Juros Anual (%)" : "Interest Rate (%)"}
           error={errors.interestRate?.message}
           {...register("interestRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label="Loan Term (Years)"
+          label={isPt ? "Prazo do Financiamento (Anos)" : "Loan Term (Years)"}
           error={errors.loanTermYears?.message}
           {...register("loanTermYears", { valueAsNumber: true })}
         />

@@ -1,279 +1,198 @@
 "use client";
 
-import { useMemo } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useState, useMemo, ReactNode } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
-import NumberInput from "@/components/NumberInput";
 import PercentInput from "@/components/PercentInput";
 import ResultCard from "@/components/ResultCard";
 import ChartWrapper from "@/components/ChartWrapper";
 import Disclaimer from "@/components/Disclaimer";
 import RelatedTools from "@/components/RelatedTools";
-import { calculateDebtPayoff } from "@/lib/calculators/debt-payoff";
-import { Trash2, Plus, TrendingDown, Calendar, DollarSign, Scale } from "lucide-react";
+import { calculateCreditCardPayoff, CreditCardDebt } from "@/lib/calculators/credit-card";
+import { DollarSign, Clock, TrendingUp, Trash2, Plus } from "lucide-react";
 
 const relatedToolsList = [
-  { key: "mortgage", href: "/tools/mortgage-calculator" },
-  { key: "personalLoan", href: "/tools/personal-loan-calculator" },
   { key: "creditCard", href: "/tools/credit-card-payoff" },
+  { key: "personalLoan", href: "/tools/personal-loan-calculator" },
+  { key: "mortgage", href: "/tools/mortgage-calculator" },
   { key: "compoundInterest", href: "/tools/compound-interest" },
 ];
 
-const debtSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  balance: z.number().min(0.01, "Balance must be greater than 0"),
-  interestRate: z.number().min(0).max(100, "Interest rate must be between 0 and 100"),
-  minimumPayment: z.number().min(1, "Minimum payment must be at least 1"),
-});
+interface Props {
+  contentSection?: ReactNode;
+}
 
-const debtPayoffSchema = z.object({
-  debts: z.array(debtSchema).min(1, "At least one debt is required"),
-  method: z.enum(["avalanche", "snowball", "compare"]),
-});
-
-type DebtPayoffFormData = z.infer<typeof debtPayoffSchema>;
-
-export default function DebtPayoffCalculatorPage() {
+export default function DebtPayoffClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
-  const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
 
-  const {
-    register,
-    control,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<DebtPayoffFormData>({
-    resolver: zodResolver(debtPayoffSchema),
-    defaultValues: {
-      debts: [
-        { name: "", balance: 5000, interestRate: 15, minimumPayment: 200 },
-        { name: "", balance: 3000, interestRate: 8, minimumPayment: 150 },
-      ],
-      method: "compare",
-    },
-  });
+  const [debts, setDebts] = useState<CreditCardDebt[]>([
+    { name: isPt ? "Empréstimo Pessoal" : "Personal Loan", balance: 8000, interestRate: 12.5, minimumPayment: 250 },
+    { name: isPt ? "Financiamento Veicular" : "Auto Loan", balance: 15000, interestRate: 8.9, minimumPayment: 400 },
+  ]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "debts",
-  });
-
-  const debts = watch("debts");
-  const method = watch("method");
+  const [activeStrategy, setActiveStrategy] = useState<"avalanche" | "snowball">("avalanche");
 
   const result = useMemo(() => {
     try {
-      if (!debts || debts.length === 0) return null;
-      return calculateDebtPayoff(debts);
+      return calculateCreditCardPayoff(debts);
     } catch {
       return null;
     }
   }, [debts]);
 
+  const currentStrategyData = useMemo(() => {
+    if (!result) return null;
+    return activeStrategy === "avalanche" ? result.avalanche : result.snowball;
+  }, [result, activeStrategy]);
+
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(value);
   };
 
-  const chartData = useMemo(() => {
-    if (!result) return [];
-    const maxLength = Math.max(
-      result.avalanche.monthlyData.length,
-      result.snowball.monthlyData.length
-    );
-    const data = [];
-    for (let i = 0; i < maxLength; i++) {
-      data.push({
-        month: `${i}`,
-        avalanche: result.avalanche.monthlyData[i]?.remainingBalance ?? 0,
-        snowball: result.snowball.monthlyData[i]?.remainingBalance ?? 0,
-      });
-    }
-    return data.filter(
-      (_, i) => i % Math.ceil(data.length / 24) === 0 || i === data.length - 1
-    );
-  }, [result]);
+  const handleDebtChange = (index: number, field: keyof CreditCardDebt, value: string | number) => {
+    const updated = [...debts];
+    updated[index] = { ...updated[index], [field]: value };
+    setDebts(updated);
+  };
 
-  const activeResult =
-    method === "avalanche"
-      ? result?.avalanche
-      : method === "snowball"
-      ? result?.snowball
-      : null;
+  const addDebt = () => {
+    setDebts([
+      ...debts,
+      {
+        name: isPt ? `Dívida ${debts.length + 1}` : `Debt ${debts.length + 1}`,
+        balance: 2000,
+        interestRate: 10.0,
+        minimumPayment: 100,
+      },
+    ]);
+  };
+
+  const removeDebt = (index: number) => {
+    if (debts.length > 1) {
+      setDebts(debts.filter((_, i) => i !== index));
+    }
+  };
 
   return (
     <CalculatorLayout
       titleKey="tools.debtPayoff"
       descriptionKey="tools.debtPayoffDesc"
       resultSection={
-        result && (
+        currentStrategyData && (
           <div className="space-y-4">
-            <h2 className="text-lg font-black uppercase tracking-tight text-black">
-              {t("common.result")}
-            </h2>
-
-            {method === "compare" ? (
-              <>
-                <ResultCard
-                  label={`${t("debtPayoff.avalanche")} — ${t("debtPayoff.totalMonths")}`}
-                  value={`${result.avalanche.totalMonths} ${t("common.months")}`}
-                  highlight={result.avalanche.totalMonths <= result.snowball.totalMonths}
-                  icon={<TrendingDown className="h-5 w-5" />}
-                />
-                <ResultCard
-                  label={`${t("debtPayoff.snowball")} — ${t("debtPayoff.totalMonths")}`}
-                  value={`${result.snowball.totalMonths} ${t("common.months")}`}
-                  highlight={result.snowball.totalMonths <= result.avalanche.totalMonths}
-                  icon={<TrendingDown className="h-5 w-5" />}
-                />
-                <ResultCard
-                  label={`${t("debtPayoff.avalanche")} — ${t("debtPayoff.totalInterestPaid")}`}
-                  value={`${currency}${formatCurrency(result.avalanche.totalInterestPaid)}`}
-                  icon={<DollarSign className="h-5 w-5" />}
-                />
-                <ResultCard
-                  label={`${t("debtPayoff.snowball")} — ${t("debtPayoff.totalInterestPaid")}`}
-                  value={`${currency}${formatCurrency(result.snowball.totalInterestPaid)}`}
-                  icon={<DollarSign className="h-5 w-5" />}
-                />
-              </>
-            ) : (
-              activeResult && (
-                <>
-                  <ResultCard
-                    label={t("debtPayoff.totalMonths")}
-                    value={`${activeResult.totalMonths} ${t("common.months")}`}
-                    highlight
-                    icon={<Calendar className="h-5 w-5" />}
-                  />
-                  <ResultCard
-                    label={t("debtPayoff.totalInterestPaid")}
-                    value={`${currency}${formatCurrency(activeResult.totalInterestPaid)}`}
-                    icon={<DollarSign className="h-5 w-5" />}
-                  />
-                  <ResultCard
-                    label={t("debtPayoff.totalAmountPaid")}
-                    value={`${currency}${formatCurrency(activeResult.totalAmountPaid)}`}
-                    icon={<Scale className="h-5 w-5" />}
-                  />
-                </>
-              )
-            )}
+            <ResultCard
+              label={isPt ? "Tempo até Quitação Total" : "Months to Pay Off"}
+              value={`${currentStrategyData.totalMonths} ${isPt ? "Meses" : "Months"}`}
+              highlight
+              icon={<Clock className="h-5 w-5" />}
+            />
+            <ResultCard
+              label={isPt ? "Total de Juros Pagos" : "Total Interest Paid"}
+              value={`${currency}${formatCurrency(currentStrategyData.totalInterest.toNumber())}`}
+              icon={<TrendingUp className="h-5 w-5" />}
+            />
+            <ResultCard
+              label={isPt ? "Total Desembolsado" : "Total Amount Paid"}
+              value={`${currency}${formatCurrency(currentStrategyData.totalPaid.toNumber())}`}
+              icon={<DollarSign className="h-5 w-5" />}
+            />
           </div>
         )
       }
       chartSection={
-        result && (
+        currentStrategyData && (
           <ChartWrapper
-            type="line"
-            data={chartData}
+            type="bar"
+            data={currentStrategyData.payoffSchedule
+              .filter((_, i) => i % 3 === 0)
+              .map((d) => ({
+                month: isPt ? `Mês ${d.month}` : `M${d.month}`,
+                balance: Math.round(d.remainingBalance),
+              }))}
             xKey="month"
-            yKeys={[
-              { key: "avalanche", label: t("debtPayoff.avalanche"), color: "#000000" },
-              { key: "snowball", label: t("debtPayoff.snowball"), color: "#facc15" },
-            ]}
-            title={t("debtPayoff.payoffProgress")}
-            height={280}
+            yKeys={[{ key: "balance", label: isPt ? "Saldo Devedor" : "Balance", color: "#facc15" }]}
+            title={isPt ? "Projeção de Curva de Amortização" : "Debt Amortization Schedule"}
+            height={250}
           />
         )
       }
-      relatedTools={
-        <RelatedTools tools={relatedToolsList} currentToolKey="debtPayoff" />
-      }
+      contentSection={contentSection}
+      relatedTools={<RelatedTools tools={relatedToolsList} currentToolKey="debtPayoff" />}
     >
       <div className="space-y-6">
-        {/* Method Toggle */}
-        <div>
-          <label className="block font-mono text-xs font-black uppercase tracking-[3px] mb-3">
-            {t("debtPayoff.compareMethods")}
-          </label>
-          <div className="flex gap-2">
-            {(["avalanche", "snowball", "compare"] as const).map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => setValue("method", m)}
-                className={`flex-1 border-[4px] border-black px-4 py-3 font-black uppercase text-sm shadow-[4px_4px_0_#000] transition-all ${
-                  method === m
-                    ? "bg-yellow-300 -translate-x-0.5 -translate-y-0.5 shadow-[6px_6px_0_#000]"
-                    : "bg-white hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000]"
-                }`}
-              >
-                {t(`debtPayoff.${m}`)}
-              </button>
-            ))}
-          </div>
+        <div className="flex gap-2 p-1 border-[3px] border-black bg-neutral-100">
+          <button
+            onClick={() => setActiveStrategy("avalanche")}
+            className={`flex-1 py-2 text-xs font-black uppercase ${
+              activeStrategy === "avalanche" ? "bg-black text-yellow-300" : "bg-transparent text-black"
+            }`}
+          >
+            {isPt ? "Método Avalanche" : "Avalanche"}
+          </button>
+          <button
+            onClick={() => setActiveStrategy("snowball")}
+            className={`flex-1 py-2 text-xs font-black uppercase ${
+              activeStrategy === "snowball" ? "bg-black text-yellow-300" : "bg-transparent text-black"
+            }`}
+          >
+            {isPt ? "Método Bola de Neve" : "Snowball"}
+          </button>
         </div>
 
-        {/* Debts */}
-        <div className="space-y-4">
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="border-[4px] border-black bg-white p-4 shadow-[4px_4px_0_#000] space-y-3"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-black uppercase tracking-[3px]">
-                  {t("debtPayoff.debtName")} #{index + 1}
-                </span>
-                {fields.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    className="border-[3px] border-black bg-red-100 p-2 shadow-[3px_3px_0_#000] hover:bg-red-200 transition-colors"
-                  >
+        <div className="space-y-4 pt-4 border-t-[3px] border-black">
+          {debts.map((debt, index) => (
+            <div key={index} className="p-4 border-[3px] border-black bg-neutral-50 space-y-4 relative">
+              <div className="flex justify-between items-center pb-2 border-b-[2px] border-black">
+                <input
+                  type="text"
+                  value={debt.name}
+                  onChange={(e) => handleDebtChange(index, "name", e.target.value)}
+                  className="font-black text-sm uppercase bg-transparent border-none focus:outline-none w-full"
+                />
+                {debts.length > 1 && (
+                  <button onClick={() => removeDebt(index)} className="text-red-600 hover:text-black ml-2">
                     <Trash2 className="h-4 w-4" />
                   </button>
                 )}
               </div>
-
-              <NumberInput
-                label={t("debtPayoff.debtName")}
-                error={errors.debts?.[index]?.name?.message}
-                {...register(`debts.${index}.name`)}
-              />
-
-              <CurrencyInput
-                label={t("debtPayoff.balance")}
-                error={errors.debts?.[index]?.balance?.message}
-                {...register(`debts.${index}.balance`, { valueAsNumber: true })}
-              />
-
-              <PercentInput
-                label={t("common.interestRate")}
-                error={errors.debts?.[index]?.interestRate?.message}
-                {...register(`debts.${index}.interestRate`, { valueAsNumber: true })}
-              />
-
-              <CurrencyInput
-                label={t("debtPayoff.minimumPayment")}
-                error={errors.debts?.[index]?.minimumPayment?.message}
-                {...register(`debts.${index}.minimumPayment`, { valueAsNumber: true })}
-              />
+              <div className="space-y-3">
+                <CurrencyInput
+                  name={`balance-${index}`}
+                  label={isPt ? "Saldo Devedor" : "Balance"}
+                  value={debt.balance}
+                  onChange={(e) => handleDebtChange(index, "balance", Number(e.target.value) || 0)}
+                />
+                <PercentInput
+                  name={`interestRate-${index}`}
+                  label={isPt ? "Taxa de Juros Anual (%)" : "Rate (%)"}
+                  value={debt.interestRate}
+                  onChange={(e) => handleDebtChange(index, "interestRate", Number(e.target.value) || 0)}
+                />
+                <CurrencyInput
+                  name={`minimumPayment-${index}`}
+                  label={isPt ? "Pagamento Mensal Atual" : "Min Pay"}
+                  value={debt.minimumPayment}
+                  onChange={(e) => handleDebtChange(index, "minimumPayment", Number(e.target.value) || 0)}
+                />
+              </div>
             </div>
           ))}
-
           <button
-            type="button"
-            onClick={() => append({ name: "", balance: 1000, interestRate: 10, minimumPayment: 100 })}
-            className="w-full border-[4px] border-black bg-yellow-300 px-6 py-3 font-black uppercase text-sm shadow-[4px_4px_0_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_#000] transition-all flex items-center justify-center gap-2"
+            onClick={addDebt}
+            className="w-full py-3 border-[3px] border-black bg-yellow-300 text-black font-black uppercase text-xs flex items-center justify-center gap-2"
           >
-            <Plus className="h-4 w-4" />
-            {t("debtPayoff.addDebt")}
+            <Plus className="h-4 w-4" /> {isPt ? "Adicionar Dívida" : "Add Debt"}
           </button>
         </div>
       </div>
-
       <div className="mt-8">
         <Disclaimer />
       </div>

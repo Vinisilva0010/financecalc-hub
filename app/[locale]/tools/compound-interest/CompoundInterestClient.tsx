@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -32,10 +32,15 @@ const compoundInterestSchema = z.object({
 
 type CompoundInterestFormData = z.infer<typeof compoundInterestSchema>;
 
-export default function CompoundInterestClient() {
+interface Props {
+  contentSection?: ReactNode;
+}
+
+export default function CompoundInterestClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
   const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
 
   const {
     register,
@@ -80,12 +85,12 @@ export default function CompoundInterestClient() {
   const chartData = useMemo(() => {
     if (!result) return [];
     return result.yearlyData.map((d) => ({
-      year: `Year ${d.year}`,
+      year: isPt ? `Ano ${d.year}` : `Year ${d.year}`,
       principal: Math.round(d.principal),
       interest: Math.round(d.interest),
       total: Math.round(d.total),
     }));
-  }, [result]);
+  }, [result, isPt]);
 
   return (
     <CalculatorLayout
@@ -114,7 +119,7 @@ export default function CompoundInterestClient() {
               icon={<TrendingUp className="h-5 w-5" />}
             />
             <ResultCard
-              label={t("common.years")}
+              label={isPt ? "Prazo (Anos)" : t("compoundInterest.years")}
               value={`${years}`}
               icon={<Calendar className="h-5 w-5" />}
             />
@@ -136,6 +141,7 @@ export default function CompoundInterestClient() {
           />
         )
       }
+      contentSection={contentSection}
       relatedTools={
         <RelatedTools tools={relatedToolsList} currentToolKey="compoundInterest" />
       }

@@ -1,11 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
 import NumberInput from "@/components/NumberInput";
@@ -15,29 +14,33 @@ import ChartWrapper from "@/components/ChartWrapper";
 import Disclaimer from "@/components/Disclaimer";
 import RelatedTools from "@/components/RelatedTools";
 import { calculateSavingsGoal, calculateRequiredMonthly } from "@/lib/calculators/savings-goal";
-import { TrendingUp, Target, PiggyBank, Calendar, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Target, PiggyBank, TrendingUp, Calendar } from "lucide-react";
 
 const relatedToolsList = [
+  { key: "compoundInterest", href: "/tools/compound-interest" },
+  { key: "investmentReturn", href: "/tools/investment-return" },
   { key: "mortgage", href: "/tools/mortgage-calculator" },
   { key: "personalLoan", href: "/tools/personal-loan-calculator" },
-  { key: "creditCard", href: "/tools/credit-card-payoff" },
-  { key: "compoundInterest", href: "/tools/compound-interest" },
 ];
 
 const savingsGoalSchema = z.object({
-  goalAmount: z.number().min(1, "Goal amount must be greater than 0"),
-  currentSavings: z.number().min(0, "Current savings cannot be negative"),
-  monthlyContribution: z.number().min(0, "Monthly contribution cannot be negative"),
-  annualInterestRate: z.number().min(0).max(100, "Interest rate must be between 0 and 100"),
-  timeframeYears: z.number().min(1).max(50, "Timeframe must be between 1 and 50 years"),
+  targetAmount: z.number().min(1, "Target amount must be greater than 0"),
+  initialSavings: z.number().min(0, "Initial savings cannot be negative"),
+  annualRate: z.number().min(0).max(100, "Interest rate must be between 0 and 100"),
+  years: z.number().min(1).max(100, "Timeframe must be between 1 and 100 years"),
 });
 
 type SavingsGoalFormData = z.infer<typeof savingsGoalSchema>;
 
-export default function SavingsGoalCalculatorPage() {
+interface Props {
+  contentSection?: ReactNode;
+}
+
+export default function SavingsGoalClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
-  const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
 
   const {
     register,
@@ -46,44 +49,48 @@ export default function SavingsGoalCalculatorPage() {
   } = useForm<SavingsGoalFormData>({
     resolver: zodResolver(savingsGoalSchema),
     defaultValues: {
-      goalAmount: 50000,
-      currentSavings: 5000,
-      monthlyContribution: 500,
-      annualInterestRate: 5,
-      timeframeYears: 10,
+      targetAmount: 50000,
+      initialSavings: 5000,
+      annualRate: 7,
+      years: 5,
     },
   });
 
-  const goalAmount = watch("goalAmount");
-  const currentSavings = watch("currentSavings");
-  const monthlyContribution = watch("monthlyContribution");
-  const annualInterestRate = watch("annualInterestRate");
-  const timeframeYears = watch("timeframeYears");
+  const targetAmount = watch("targetAmount") || 0;
+  const initialSavings = watch("initialSavings") || 0;
+  const annualRate = watch("annualRate") || 0;
+  const years = watch("years") || 1;
 
   const result = useMemo(() => {
     try {
-      return calculateSavingsGoal({
-        goalAmount,
-        currentSavings,
-        monthlyContribution,
-        annualInterestRate,
-        timeframeYears,
+      const requiredMonthly = calculateRequiredMonthly(
+        targetAmount,
+        initialSavings,
+        annualRate,
+        years
+      );
+
+      const simResult = calculateSavingsGoal({
+        goalAmount: targetAmount,
+        currentSavings: initialSavings,
+        monthlyContribution: requiredMonthly,
+        annualInterestRate: annualRate,
+        timeframeYears: years,
       });
+
+      return {
+        monthlyContribution: requiredMonthly,
+        totalInterestEarned: simResult.totalInterestEarned,
+        totalContributions: simResult.totalContributions,
+        monthlyData: simResult.monthlyData,
+      };
     } catch {
       return null;
     }
-  }, [goalAmount, currentSavings, monthlyContribution, annualInterestRate, timeframeYears]);
-
-  const requiredMonthly = useMemo(() => {
-    try {
-      return calculateRequiredMonthly(goalAmount, currentSavings, annualInterestRate, timeframeYears);
-    } catch {
-      return 0;
-    }
-  }, [goalAmount, currentSavings, annualInterestRate, timeframeYears]);
+  }, [targetAmount, initialSavings, annualRate, years]);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -91,116 +98,86 @@ export default function SavingsGoalCalculatorPage() {
   };
 
   const chartData = useMemo(() => {
-    if (!result) return [];
-    const schedule = result.monthlyData;
-    const filtered = schedule.filter((_, i) => i % Math.ceil(schedule.length / 12) === 0 || i === schedule.length - 1);
-    return filtered.map((d) => ({
-      month: `${d.month}`,
-      balance: Math.round(d.balance),
-      contributions: Math.round(d.contributions),
-      interest: Math.round(d.interest),
-    }));
-  }, [result]);
+    if (!result || !result.monthlyData) return [];
+    return result.monthlyData
+      .filter((d) => d.month % 12 === 0 || d.month === result.monthlyData.length - 1)
+      .map((d) => ({
+        year: isPt ? `Ano ${Math.floor(d.month / 12)}` : `Year ${Math.floor(d.month / 12)}`,
+        balance: Math.round(d.balance),
+        target: Math.round(targetAmount),
+      }));
+  }, [result, targetAmount, isPt]);
 
   return (
     <CalculatorLayout
       titleKey="tools.savingsGoal"
       descriptionKey="tools.savingsGoalDesc"
       resultSection={
-        result && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-black uppercase tracking-tight text-black">
-              {t("common.result")}
-            </h2>
-            <ResultCard
-              label={t("savingsGoal.isReachable")}
-              value={result.isReachable ? t("savingsGoal.reachable") : t("savingsGoal.notReachable")}
-              highlight={result.isReachable}
-              icon={result.isReachable ? <CheckCircle2 className="h-5 w-5" /> : <AlertTriangle className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("savingsGoal.monthsToReach")}
-              value={result.isReachable ? `${result.monthsToReach} ${t("common.months")}` : `${result.monthsToReach}+ ${t("common.months")}`}
-              icon={<Calendar className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("savingsGoal.finalAmount")}
-              value={`${currency}${formatCurrency(result.finalAmount)}`}
-              icon={<TrendingUp className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("savingsGoal.totalContributions")}
-              value={`${currency}${formatCurrency(result.totalContributions)}`}
-              icon={<PiggyBank className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("savingsGoal.totalInterestEarned")}
-              value={`${currency}${formatCurrency(result.totalInterestEarned)}`}
-              icon={<Target className="h-5 w-5" />}
-            />
-            {!result.isReachable && (
-              <ResultCard
-                label={t("savingsGoal.shortfall")}
-                value={`${currency}${formatCurrency(result.shortfall)}`}
-                highlight={false}
-                icon={<AlertTriangle className="h-5 w-5" />}
-              />
-            )}
-            {!result.isReachable && (
-              <div className="border-[4px] border-black bg-yellow-100 p-4 shadow-[4px_4px_0_#000]">
-                <p className="font-bold text-sm uppercase tracking-wide mb-1">{t("savingsGoal.requiredMonthly")}</p>
-                <p className="text-2xl font-black">{`${currency}${formatCurrency(requiredMonthly)}`}</p>
-                <p className="text-sm font-bold mt-1 text-black/70">/ {t("common.months")}</p>
-              </div>
-            )}
-          </div>
-        )
+        <div className="space-y-4">
+          <h2 className="text-lg font-black uppercase tracking-tight text-black">
+            {t("common.result")}
+          </h2>
+          <ResultCard
+            label={isPt ? "Aporte Mensal Necessário" : "Required Monthly Savings"}
+            value={`${currency}${formatCurrency(result ? result.monthlyContribution : 0)}`}
+            highlight
+            icon={<PiggyBank className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Meta Final" : "Target Goal"}
+            value={`${currency}${formatCurrency(targetAmount)}`}
+            icon={<Target className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Total de Juros Acumulados" : "Total Interest Earned"}
+            value={`${currency}${formatCurrency(result ? result.totalInterestEarned : 0)}`}
+            icon={<TrendingUp className="h-5 w-5" />}
+          />
+          <ResultCard
+            label={isPt ? "Prazo da Meta" : "Timeframe"}
+            value={`${years} ${isPt ? "Anos" : "Years"}`}
+            icon={<Calendar className="h-5 w-5" />}
+          />
+        </div>
       }
       chartSection={
-        result && (
+        chartData.length > 0 ? (
           <ChartWrapper
-            type="line"
+            type="bar"
             data={chartData}
-            xKey="month"
+            xKey="year"
             yKeys={[
-              { key: "balance", label: t("savingsGoal.balance"), color: "#facc15" },
-              { key: "contributions", label: t("savingsGoal.contributions"), color: "#000000" },
-              { key: "interest", label: t("savingsGoal.interest"), color: "#666666" },
+              { key: "balance", label: isPt ? "Patrimônio Acumulado" : "Accumulated Balance", color: "#facc15" },
+              { key: "target", label: isPt ? "Meta Alvo" : "Goal Target", color: "#000000" },
             ]}
-            title={t("savingsGoal.progressChart")}
+            title={isPt ? "Projeção de Acúmulo Até a Meta" : "Progress Projection Toward Goal"}
             height={280}
           />
-        )
+        ) : undefined
       }
-      relatedTools={
-        <RelatedTools tools={relatedToolsList} currentToolKey="savingsGoal" />
-      }
+      contentSection={contentSection}
+      relatedTools={<RelatedTools tools={relatedToolsList} currentToolKey="savingsGoal" />}
     >
       <div className="space-y-6">
         <CurrencyInput
-          label={t("savingsGoal.goalAmount")}
-          error={errors.goalAmount?.message}
-          {...register("goalAmount", { valueAsNumber: true })}
+          label={isPt ? "Valor da Meta Financeira" : "Target Amount"}
+          error={errors.targetAmount?.message}
+          {...register("targetAmount", { valueAsNumber: true })}
         />
         <CurrencyInput
-          label={t("savingsGoal.currentSavings")}
-          error={errors.currentSavings?.message}
-          {...register("currentSavings", { valueAsNumber: true })}
-        />
-        <CurrencyInput
-          label={t("savingsGoal.monthlyContribution")}
-          error={errors.monthlyContribution?.message}
-          {...register("monthlyContribution", { valueAsNumber: true })}
+          label={isPt ? "Valor Inicial Disponível" : "Initial Savings"}
+          error={errors.initialSavings?.message}
+          {...register("initialSavings", { valueAsNumber: true })}
         />
         <PercentInput
-          label={t("common.interestRate")}
-          error={errors.annualInterestRate?.message}
-          {...register("annualInterestRate", { valueAsNumber: true })}
+          label={isPt ? "Rendimento Anual Esperado (%)" : "Expected Annual Return (%)"}
+          error={errors.annualRate?.message}
+          {...register("annualRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label={t("savingsGoal.timeframe")}
-          error={errors.timeframeYears?.message}
-          {...register("timeframeYears", { valueAsNumber: true })}
+          label={isPt ? "Prazo para Atingir (Anos)" : "Timeframe (Years)"}
+          error={errors.years?.message}
+          {...register("years", { valueAsNumber: true })}
         />
       </div>
 

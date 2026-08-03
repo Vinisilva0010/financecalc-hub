@@ -1,6 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { ReactNode } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
@@ -8,19 +9,19 @@ import NumberInput from "@/components/NumberInput";
 import PercentInput from "@/components/PercentInput";
 import ResultCard from "@/components/ResultCard";
 import ChartWrapper from "@/components/ChartWrapper";
+import Disclaimer from "@/components/Disclaimer";
 import { Home, DollarSign, ShieldCheck, CreditCard } from "lucide-react";
 import { calculateAffordability, AffordabilityInput } from "@/lib/calculators/affordability";
 
-function formatCurrency(val: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  }).format(val);
+interface Props {
+  contentSection?: ReactNode;
 }
 
-export default function AffordabilityPage() {
+export default function AffordabilityClient({ contentSection }: Props) {
   const t = useTranslations("affordability");
+  const locale = useLocale();
+  const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
 
   const { register, watch } = useForm<AffordabilityInput>({
     defaultValues: {
@@ -33,96 +34,85 @@ export default function AffordabilityPage() {
   });
 
   const formValues = watch();
-  const results = calculateAffordability({
-    annualIncome: Number(formValues.annualIncome) || 0,
-    monthlyDebts: Number(formValues.monthlyDebts) || 0,
-    downPayment: Number(formValues.downPayment) || 0,
-    interestRate: Number(formValues.interestRate) || 0,
-    loanTermYears: Number(formValues.loanTermYears) || 1,
-  });
+  const result = calculateAffordability(formValues);
 
-  const chartData = [
-    {
-      category: t("maxHomePrice"),
-      amount: results.maxHomePrice,
-    },
-    {
-      category: t("recommendedBudget"),
-      amount: results.recommendedBudget,
-    },
-  ];
+  function formatCurrency(val: number): string {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(val);
+  }
 
   return (
     <CalculatorLayout
-      titleKey="affordability.title"
-      descriptionKey="affordability.description"
+      titleKey="tools.affordability"
+      descriptionKey="tools.affordabilityDesc"
       resultSection={
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <div className="space-y-4">
           <ResultCard
-            label={t("maxHomePrice")}
-            value={formatCurrency(results.maxHomePrice)}
-            icon={<Home className="w-6 h-6 text-black shrink-0" />}
-            highlight={true}
+            label={isPt ? "Preço Máximo do Imóvel" : "Max Home Price"}
+            value={`${currency}${formatCurrency(result.maxHomePrice)}`}
+            highlight
+            icon={<Home className="h-5 w-5" />}
           />
           <ResultCard
-            label={t("recommendedBudget")}
-            value={formatCurrency(results.recommendedBudget)}
-            icon={<ShieldCheck className="w-6 h-6 text-black shrink-0" />}
+            label={isPt ? "Valor Máximo do Financiamento" : "Max Loan Amount"}
+            value={`${currency}${formatCurrency(result.maxLoanAmount)}`}
+            icon={<DollarSign className="h-5 w-5" />}
           />
           <ResultCard
-            label={t("maxLoanAmount")}
-            value={formatCurrency(results.maxLoanAmount)}
-            icon={<DollarSign className="w-6 h-6 text-black shrink-0" />}
+            label={isPt ? "Parcela Mensal Máxima" : "Max Monthly Payment"}
+            value={`${currency}${formatCurrency(result.maxMonthlyPayment)}`}
+            icon={<CreditCard className="h-5 w-5" />}
           />
           <ResultCard
-            label={t("maxMonthlyPayment")}
-            value={formatCurrency(results.maxMonthlyPayment)}
-            icon={<CreditCard className="w-6 h-6 text-black shrink-0" />}
+            label={isPt ? "Orçamento Recomendado" : "Recommended Budget"}
+            value={`${currency}${formatCurrency(result.recommendedBudget)}`}
+            icon={<ShieldCheck className="h-5 w-5" />}
           />
         </div>
       }
       chartSection={
         <ChartWrapper
           type="bar"
-          data={chartData}
-          xKey="category"
-          yKeys={[{ key: "amount", label: "Value", color: "#facc15" }]}
-          title={t("maxHomePrice")}
+          data={[
+            { name: isPt ? "Entrada" : "Down Payment", value: formValues.downPayment },
+            { name: isPt ? "Empréstimo Máximo" : "Max Loan", value: result.maxLoanAmount },
+          ]}
+          xKey="name"
+          yKeys={[{ key: "value", label: isPt ? "Valor" : "Amount", color: "#facc15" }]}
+          title={isPt ? "Composição do Poder de Compra" : "Home Purchasing Power Breakdown"}
+          height={250}
         />
       }
+      contentSection={contentSection}
     >
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+      <div className="space-y-6">
         <CurrencyInput
-          label={t("annualIncome")}
+          label={isPt ? "Renda Bruta Anual" : "Annual Gross Income"}
           {...register("annualIncome", { valueAsNumber: true })}
-          min={0}
         />
-
         <CurrencyInput
-          label={t("monthlyDebts")}
+          label={isPt ? "Pagamentos Mensais de Dívidas" : "Monthly Debt Payments"}
           {...register("monthlyDebts", { valueAsNumber: true })}
-          min={0}
         />
-
         <CurrencyInput
-          label={t("downPayment")}
+          label={isPt ? "Valor Salvo para Entrada" : "Down Payment Savings"}
           {...register("downPayment", { valueAsNumber: true })}
-          min={0}
         />
-
         <PercentInput
-          label={t("interestRate")}
+          label={isPt ? "Taxa de Juros Anual (%)" : "Interest Rate (%)"}
           {...register("interestRate", { valueAsNumber: true })}
-          min={0}
         />
-
         <NumberInput
-          label={t("loanTermYears")}
+          label={isPt ? "Prazo do Financiamento (Anos)" : "Loan Term (Years)"}
           {...register("loanTermYears", { valueAsNumber: true })}
-          min={1}
-          max={50}
         />
-      </form>
+      </div>
+      <div className="mt-8">
+        <Disclaimer />
+      </div>
     </CalculatorLayout>
   );
 }

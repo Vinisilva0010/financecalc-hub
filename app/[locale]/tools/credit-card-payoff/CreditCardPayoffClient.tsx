@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
-import NumberInput from "@/components/NumberInput";
 import PercentInput from "@/components/PercentInput";
 import ResultCard from "@/components/ResultCard";
 import ChartWrapper from "@/components/ChartWrapper";
@@ -21,14 +20,19 @@ const relatedToolsList = [
   { key: "compoundInterest", href: "/tools/compound-interest" },
 ];
 
-export default function CreditCardPayoffClient() {
+interface Props {
+  contentSection?: ReactNode;
+}
+
+export default function CreditCardPayoffClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
-  const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
 
   const [debts, setDebts] = useState<CreditCardDebt[]>([
-    { name: "Credit Card 1", balance: 5000, interestRate: 18.99, minimumPayment: 150 },
-    { name: "Credit Card 2", balance: 3000, interestRate: 15.99, minimumPayment: 100 },
+    { name: isPt ? "Cartão de Crédito 1" : "Credit Card 1", balance: 5000, interestRate: 18.99, minimumPayment: 150 },
+    { name: isPt ? "Cartão de Crédito 2" : "Credit Card 2", balance: 3000, interestRate: 15.99, minimumPayment: 100 },
   ]);
 
   const [activeStrategy, setActiveStrategy] = useState<"avalanche" | "snowball">("avalanche");
@@ -41,36 +45,41 @@ export default function CreditCardPayoffClient() {
     }
   }, [debts]);
 
+  const currentStrategyData = useMemo(() => {
+    if (!result) return null;
+    return activeStrategy === "avalanche" ? result.avalanche : result.snowball;
+  }, [result, activeStrategy]);
+
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(value);
   };
 
-  const strategy = result ? result[activeStrategy] : null;
-
-  const chartData = useMemo(() => {
-    if (!strategy) return [];
-    return strategy.payoffSchedule.filter((_, i) => i % 6 === 0 || i === strategy.payoffSchedule.length - 1).map((p) => ({
-      month: `Month ${p.month}`,
-      balance: Math.round(p.remainingBalance),
-    }));
-  }, [strategy]);
-
-  const updateDebt = (index: number, field: keyof CreditCardDebt, value: string | number) => {
-    const newDebts = [...debts];
-    newDebts[index] = { ...newDebts[index], [field]: value };
-    setDebts(newDebts);
+  const handleDebtChange = (index: number, field: keyof CreditCardDebt, value: string | number) => {
+    const updated = [...debts];
+    updated[index] = { ...updated[index], [field]: value };
+    setDebts(updated);
   };
 
   const addDebt = () => {
-    setDebts([...debts, { name: `Credit Card ${debts.length + 1}`, balance: 0, interestRate: 0, minimumPayment: 0 }]);
+    setDebts([
+      ...debts,
+      {
+        name: isPt ? `Cartão de Crédito ${debts.length + 1}` : `Credit Card ${debts.length + 1}`,
+        balance: 1000,
+        interestRate: 19.99,
+        minimumPayment: 50,
+      },
+    ]);
   };
 
   const removeDebt = (index: number) => {
-    setDebts(debts.filter((_, i) => i !== index));
+    if (debts.length > 1) {
+      setDebts(debts.filter((_, i) => i !== index));
+    }
   };
 
   return (
@@ -78,130 +87,113 @@ export default function CreditCardPayoffClient() {
       titleKey="tools.creditCard"
       descriptionKey="tools.creditCardDesc"
       resultSection={
-        strategy && (
+        currentStrategyData && (
           <div className="space-y-4">
-            <h2 className="text-lg font-black uppercase tracking-tight text-black">
-              {t(`creditCard.${activeStrategy}`)}
-            </h2>
             <ResultCard
-              label={t("creditCard.totalMonths")}
-              value={`${strategy.totalMonths}`}
+              label={isPt ? "Meses até a Quitação" : "Months to Pay Off"}
+              value={`${currentStrategyData.totalMonths}`}
               highlight
               icon={<Clock className="h-5 w-5" />}
             />
             <ResultCard
-              label={t("creditCard.totalInterestPaid")}
-              value={`${currency}${formatCurrency(strategy.totalInterest.toNumber())}`}
+              label={isPt ? "Total de Juros Pagos" : "Total Interest Paid"}
+              value={`${currency}${formatCurrency(currentStrategyData.totalInterest.toNumber())}`}
               icon={<TrendingUp className="h-5 w-5" />}
             />
             <ResultCard
-              label={t("creditCard.totalAmountPaid")}
-              value={`${currency}${formatCurrency(strategy.totalPaid.toNumber())}`}
+              label={isPt ? "Total Desembolsado" : "Total Amount Paid"}
+              value={`${currency}${formatCurrency(currentStrategyData.totalPaid.toNumber())}`}
               icon={<DollarSign className="h-5 w-5" />}
             />
-            {result && (
-              <div className="border-[4px] border-black bg-white p-4">
-                <p className="text-xs font-black uppercase tracking-wider text-black mb-2">{t("creditCard.compareMethods")}</p>
-                <div className="space-y-2 text-sm font-bold">
-                  <div className="flex justify-between">
-                    <span>{t("creditCard.avalanche")}:</span>
-                    <span>{result.avalanche.totalMonths} {t("common.months")}, {currency}{formatCurrency(result.avalanche.totalInterest.toNumber())} {t("common.interestRate")}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>{t("creditCard.snowball")}:</span>
-                    <span>{result.snowball.totalMonths} {t("common.months")}, {currency}{formatCurrency(result.snowball.totalInterest.toNumber())} {t("common.interestRate")}</span>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         )
       }
       chartSection={
-        strategy && (
+        currentStrategyData && (
           <ChartWrapper
-            type="line"
-            data={chartData}
+            type="bar"
+            data={currentStrategyData.payoffSchedule
+              .filter((_, i) => i % 3 === 0)
+              .map((d) => ({
+                month: isPt ? `Mês ${d.month}` : `M${d.month}`,
+                balance: Math.round(d.remainingBalance),
+              }))}
             xKey="month"
-            yKeys={[
-              { key: "balance", label: t("creditCard.remainingBalance"), color: "#dc2626" },
-            ]}
-            title={t("creditCard.payoffProgress")}
-            height={280}
+            yKeys={[{ key: "balance", label: isPt ? "Saldo Devedor" : "Balance", color: "#facc15" }]}
+            title={isPt ? "Redução Gradual do Saldo Devedor" : "Debt Balance Reduction"}
+            height={250}
           />
         )
       }
-      relatedTools={
-        <RelatedTools tools={relatedToolsList} currentToolKey="creditCard" />
-      }
+      contentSection={contentSection}
+      relatedTools={<RelatedTools tools={relatedToolsList} currentToolKey="creditCard" />}
     >
       <div className="space-y-6">
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 p-1 border-[3px] border-black bg-neutral-100">
           <button
-            type="button"
             onClick={() => setActiveStrategy("avalanche")}
-            className={`flex-1 border-[4px] border-black py-3 text-sm font-black uppercase tracking-wider shadow-[4px_4px_0_#000] transition-all ${activeStrategy === "avalanche" ? "bg-yellow-300" : "bg-white"}`}
+            className={`flex-1 py-2 text-xs font-black uppercase ${
+              activeStrategy === "avalanche" ? "bg-black text-yellow-300" : "bg-transparent text-black"
+            }`}
           >
-            {t("creditCard.avalanche")}
+            {isPt ? "Método Avalanche" : "Avalanche"}
           </button>
           <button
-            type="button"
             onClick={() => setActiveStrategy("snowball")}
-            className={`flex-1 border-[4px] border-black py-3 text-sm font-black uppercase tracking-wider shadow-[4px_4px_0_#000] transition-all ${activeStrategy === "snowball" ? "bg-yellow-300" : "bg-white"}`}
+            className={`flex-1 py-2 text-xs font-black uppercase ${
+              activeStrategy === "snowball" ? "bg-black text-yellow-300" : "bg-transparent text-black"
+            }`}
           >
-            {t("creditCard.snowball")}
+            {isPt ? "Método Bola de Neve" : "Snowball"}
           </button>
         </div>
 
-        {debts.map((debt, index) => (
-          <div key={index} className="border-[4px] border-black bg-white p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <input
-                type="text"
-                value={debt.name}
-                onChange={(e) => updateDebt(index, "name", e.target.value)}
-                className="text-sm font-black uppercase tracking-tight border-[2px] border-black px-2 py-1"
-              />
-              <button
-                onClick={() => removeDebt(index)}
-                className="border-[2px] border-black bg-red-100 p-1.5 transition-colors hover:bg-red-200"
-              >
-                <Trash2 className="h-4 w-4 text-red-600" />
-              </button>
+        <div className="space-y-4 pt-4 border-t-[3px] border-black">
+          {debts.map((debt, index) => (
+            <div key={index} className="p-4 border-[3px] border-black bg-neutral-50 space-y-4 relative">
+              <div className="flex justify-between items-center pb-2 border-b-[2px] border-black">
+                <input
+                  type="text"
+                  value={debt.name}
+                  onChange={(e) => handleDebtChange(index, "name", e.target.value)}
+                  className="font-black text-sm uppercase bg-transparent border-none focus:outline-none w-full"
+                />
+                {debts.length > 1 && (
+                  <button onClick={() => removeDebt(index)} className="text-red-600 hover:text-black ml-2">
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+              <div className="space-y-3">
+                <CurrencyInput
+                  name={`balance-${index}`}
+                  label={isPt ? "Saldo Devedor" : "Balance"}
+                  value={debt.balance}
+                  onChange={(e) => handleDebtChange(index, "balance", Number(e.target.value) || 0)}
+                />
+                <PercentInput
+                  name={`interestRate-${index}`}
+                  label={isPt ? "Taxa de Juros Anual (%)" : "Rate (%)"}
+                  value={debt.interestRate}
+                  onChange={(e) => handleDebtChange(index, "interestRate", Number(e.target.value) || 0)}
+                />
+                <CurrencyInput
+                  name={`minimumPayment-${index}`}
+                  label={isPt ? "Pagamento Mínimo Mensal" : "Min Pay"}
+                  value={debt.minimumPayment}
+                  onChange={(e) => handleDebtChange(index, "minimumPayment", Number(e.target.value) || 0)}
+                />
+              </div>
             </div>
-            <CurrencyInput
-              label={t("creditCard.balance")}
-              name={`balance-${index}`}
-              value={debt.balance}
-              onChange={(e) => updateDebt(index, "balance", Number(e.target.value))}
-              min={0}
-            />
-            <PercentInput
-              label={t("common.interestRate")}
-              name={`rate-${index}`}
-              value={debt.interestRate}
-              onChange={(e) => updateDebt(index, "interestRate", Number(e.target.value))}
-              min={0}
-              max={100}
-            />
-            <CurrencyInput
-              label={t("creditCard.minimumPayment")}
-              name={`min-${index}`}
-              value={debt.minimumPayment}
-              onChange={(e) => updateDebt(index, "minimumPayment", Number(e.target.value))}
-              min={0}
-            />
-          </div>
-        ))}
-
-        <button
-          onClick={addDebt}
-          className="flex w-full items-center justify-center gap-2 border-[4px] border-black bg-yellow-300 py-3 text-sm font-black uppercase tracking-wider shadow-[4px_4px_0_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#000]"
-        >
-          <Plus className="h-4 w-4" /> {t("creditCard.addDebt")}
-        </button>
+          ))}
+          <button
+            onClick={addDebt}
+            className="w-full py-3 border-[3px] border-black bg-yellow-300 text-black font-black uppercase text-xs flex items-center justify-center gap-2"
+          >
+            <Plus className="h-4 w-4" /> {isPt ? "Adicionar Cartão" : "Add Card"}
+          </button>
+        </div>
       </div>
-
       <div className="mt-8">
         <Disclaimer />
       </div>

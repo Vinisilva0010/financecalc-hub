@@ -56,6 +56,11 @@ export default async function Page({ params }: Props) {
           answer:
             "Em prazos longos como 30 anos (360 meses), pequenas variações na taxa de juros causam impactos expressivos no custo total pago, podendo fazer com que o total de juros supere o próprio valor financiado.",
         },
+        {
+          question: "Como amortizações extraordinárias antecipadas reduzem o prazo do contrato?",
+          answer:
+            "Pagar valores adicionais abates diretamente do saldo devedor principal. Isso reduz o cálculo da incidência de juros nos meses seguintes, permitindo quitar o contrato anos antes do previsto.",
+        },
       ]
     : [
         {
@@ -72,6 +77,11 @@ export default async function Page({ params }: Props) {
           question: "How does the loan term impact total interest paid?",
           answer:
             "Longer terms reduce the monthly payment amount but significantly increase total interest charges over the life of the loan due to prolonged interest compounding.",
+        },
+        {
+          question: "How do extra principal prepayments reduce total mortgage duration?",
+          answer:
+            "Directing extra cash toward loan principal reduces the remaining interest-bearing balance, automatically shortening payoff duration and reducing total lifetime interest.",
         },
       ];
 

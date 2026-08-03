@@ -1,18 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import CalculatorLayout from "@/components/CalculatorLayout";
 import CurrencyInput from "@/components/CurrencyInput";
 import NumberInput from "@/components/NumberInput";
 import PercentInput from "@/components/PercentInput";
 import ResultCard from "@/components/ResultCard";
 import ChartWrapper from "@/components/ChartWrapper";
-import AmortizationTable from "@/components/AmortizationTable";
 import Disclaimer from "@/components/Disclaimer";
 import RelatedTools from "@/components/RelatedTools";
 import { calculatePersonalLoan } from "@/lib/calculators/personal-loan";
@@ -21,22 +19,27 @@ import { DollarSign, TrendingUp, Calendar, CreditCard } from "lucide-react";
 const relatedToolsList = [
   { key: "mortgage", href: "/tools/mortgage-calculator" },
   { key: "creditCard", href: "/tools/credit-card-payoff" },
+  { key: "debtPayoff", href: "/tools/debt-payoff" },
   { key: "compoundInterest", href: "/tools/compound-interest" },
-  { key: "affordability", href: "/tools/affordability" },
 ];
 
 const personalLoanSchema = z.object({
   loanAmount: z.number().min(1, "Loan amount must be greater than 0"),
   interestRate: z.number().min(0).max(100, "Interest rate must be between 0 and 100"),
-  loanTermMonths: z.number().min(1).max(600, "Loan term must be between 1 and 600 months"),
+  loanTermMonths: z.number().min(1).max(360, "Term must be between 1 and 360 months"),
 });
 
 type PersonalLoanFormData = z.infer<typeof personalLoanSchema>;
 
-export default function PersonalLoanCalculatorPage() {
+interface Props {
+  contentSection?: ReactNode;
+}
+
+export default function PersonalLoanClient({ contentSection }: Props) {
   const t = useTranslations();
   const locale = useLocale();
-  const currency = locale === "pt" ? "R$" : "$";
+  const isPt = locale === "pt";
+  const currency = isPt ? "R$" : "$";
 
   const {
     register,
@@ -46,8 +49,8 @@ export default function PersonalLoanCalculatorPage() {
     resolver: zodResolver(personalLoanSchema),
     defaultValues: {
       loanAmount: 20000,
-      interestRate: 8.5,
-      loanTermMonths: 60,
+      interestRate: 12.5,
+      loanTermMonths: 36,
     },
   });
 
@@ -68,7 +71,7 @@ export default function PersonalLoanCalculatorPage() {
   }, [loanAmount, interestRate, loanTermMonths]);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    return new Intl.NumberFormat(isPt ? "pt-BR" : "en-US", {
       style: "decimal",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -77,23 +80,14 @@ export default function PersonalLoanCalculatorPage() {
 
   const chartData = useMemo(() => {
     if (!result) return [];
-    const schedule = result.amortizationSchedule;
-    const yearlyData = [];
-    const years = Math.ceil(loanTermMonths / 12);
-    for (let year = 1; year <= years; year++) {
-      const startIdx = (year - 1) * 12;
-      const endIdx = Math.min(year * 12, schedule.length);
-      const yearPayments = schedule.slice(startIdx, endIdx);
-      const principal = yearPayments.reduce((sum, p) => sum + p.principal, 0);
-      const interest = yearPayments.reduce((sum, p) => sum + p.interest, 0);
-      yearlyData.push({
-        year: `Year ${year}`,
-        principal: Math.round(principal),
-        interest: Math.round(interest),
-      });
-    }
-    return yearlyData;
-  }, [result, loanTermMonths]);
+    return [
+      {
+        name: isPt ? "Composição do Empréstimo" : "Loan Composition",
+        principal: Math.round(loanAmount || 0),
+        interest: Math.round(result.totalInterest.toNumber()),
+      },
+    ];
+  }, [result, loanAmount, isPt]);
 
   return (
     <CalculatorLayout
@@ -106,26 +100,26 @@ export default function PersonalLoanCalculatorPage() {
               {t("common.result")}
             </h2>
             <ResultCard
-              label={t("common.monthlyPayment")}
+              label={isPt ? "Parcela Mensal Fixa" : "Monthly Payment"}
               value={`${currency}${formatCurrency(result.monthlyPayment.toNumber())}`}
               highlight
-              icon={<DollarSign className="h-5 w-5" />}
-            />
-            <ResultCard
-              label={t("common.loanAmount")}
-              value={`${currency}${formatCurrency(loanAmount)}`}
               icon={<CreditCard className="h-5 w-5" />}
             />
             <ResultCard
-              label={t("common.totalInterest")}
+              label={isPt ? "Valor do Empréstimo" : "Loan Amount"}
+              value={`${currency}${formatCurrency(loanAmount || 0)}`}
+              icon={<DollarSign className="h-5 w-5" />}
+            />
+            <ResultCard
+              label={isPt ? "Total de Juros" : "Total Interest"}
               value={`${currency}${formatCurrency(result.totalInterest.toNumber())}`}
               icon={<TrendingUp className="h-5 w-5" />}
             />
             <ResultCard
-              label={t("common.totalCost")}
+              label={isPt ? "Custo Total do Empréstimo" : "Total Cost"}
               value={`${currency}${formatCurrency(result.totalCost.toNumber())}`}
               icon={<Calendar className="h-5 w-5" />}
-              subtext={`${result.numberOfPayments} ${t("common.months")}`}
+              subtext={`${loanTermMonths} ${isPt ? "meses" : "months"}`}
             />
           </div>
         )
@@ -135,41 +129,32 @@ export default function PersonalLoanCalculatorPage() {
           <ChartWrapper
             type="bar"
             data={chartData}
-            xKey="year"
+            xKey="name"
             yKeys={[
-              { key: "principal", label: "Principal", color: "#000000" },
-              { key: "interest", label: "Interest", color: "#facc15" },
+              { key: "principal", label: isPt ? "Principal" : "Principal", color: "#000000" },
+              { key: "interest", label: isPt ? "Juros Totais" : "Total Interest", color: "#facc15" },
             ]}
-            title="Principal vs Interest by Year"
-            height={280}
+            title={isPt ? "Principal Solicitado vs Juros Pagos" : "Principal vs Interest Breakdown"}
+            height={250}
           />
         )
       }
-      amortizationSection={
-        result && (
-          <AmortizationTable
-            data={result.amortizationSchedule}
-            currencySymbol={currency}
-          />
-        )
-      }
-      relatedTools={
-        <RelatedTools tools={relatedToolsList} currentToolKey="personalLoan" />
-      }
+      contentSection={contentSection}
+      relatedTools={<RelatedTools tools={relatedToolsList} currentToolKey="personalLoan" />}
     >
       <div className="space-y-6">
         <CurrencyInput
-          label="Loan Amount"
+          label={isPt ? "Valor Solicitado" : "Loan Amount"}
           error={errors.loanAmount?.message}
           {...register("loanAmount", { valueAsNumber: true })}
         />
         <PercentInput
-          label="Interest Rate"
+          label={isPt ? "Taxa de Juros Anual (%)" : "Interest Rate (%)"}
           error={errors.interestRate?.message}
           {...register("interestRate", { valueAsNumber: true })}
         />
         <NumberInput
-          label="Loan Term (Months)"
+          label={isPt ? "Prazo (Meses)" : "Loan Term (Months)"}
           error={errors.loanTermMonths?.message}
           {...register("loanTermMonths", { valueAsNumber: true })}
         />
