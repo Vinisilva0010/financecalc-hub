@@ -18,6 +18,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "FinanceCalc Hub",
   description: "Free financial calculators for smarter money decisions",
+  verification: {
+    google: "QuRgiL70MlGbEKhROyOrhw9BfSM3evogJSsdU2a5G5s", // ← troque pelo content que o Google Search Console te der
+  },
 };
 
 export default async function LocaleLayout({
