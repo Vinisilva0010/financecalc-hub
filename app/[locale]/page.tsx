@@ -34,6 +34,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Page() {
-  return <HomeClient />;
+export default async function Page({ params }: Props) {
+  const { locale } = await params;
+  const baseUrl = "https://financecalchub.zanvexis.com";
+
+  const jsonLdOrganization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "FinanceCalc Hub",
+    "url": baseUrl,
+    "logo": `${baseUrl}/favicon.ico`,
+    "founder": {
+      "@type": "Person",
+      "name": "Vinicius Pontual",
+      "url": `${baseUrl}/${locale}/author/vinicius-pontual`
+    },
+    "sameAs": [
+      "https://github.com/vnspo",
+      "https://linkedin.com/in/vinicius-pontual"
+    ]
+  };
+
+  const jsonLdWebSite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FinanceCalc Hub",
+    "url": baseUrl,
+    "publisher": {
+      "@type": "Organization",
+      "name": "FinanceCalc Hub"
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite) }}
+      />
+      <HomeClient />
+    </>
+  );
 }
