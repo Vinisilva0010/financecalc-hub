@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { routing } from "@/lib/i18n/routing";
 import { notFound } from "next/navigation";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   title: "FinanceCalc Hub",
   description: "Free financial calculators for smarter money decisions",
   verification: {
-    google: "QuRgiL70MlGbEKhROyOrhw9BfSM3evogJSsdU2a5G5s", // ← troque pelo content que o Google Search Console te der
+    google: "QuRgiL70MlGbEKhROyOrhw9BfSM3evogJSsdU2a5G5s",
   },
 };
 
@@ -42,6 +43,20 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} font-sans`}>
       <body className="min-h-full flex flex-col bg-white text-black font-bold">
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9D1MNC2XSK"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9D1MNC2XSK');
+          `}
+        </Script>
+
         <NextIntlClientProvider messages={messages} locale={locale}>
           {/* Header / Navbar */}
           <header className="sticky top-0 z-50 border-b-[5px] border-black bg-white">
